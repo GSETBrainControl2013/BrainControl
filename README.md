@@ -1,4 +1,4 @@
 BrainControl
 ============
 
-Our brain control code!
+Our brain control code is awesome!
