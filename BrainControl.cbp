@@ -36,11 +36,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="example2/ExpressivControl.cpp" />
-		<Unit filename="example2/ExpressivControl.h" />
-		<Unit filename="example2/ExpressivDemo.cpp" />
-		<Unit filename="example2/Socket.cpp" />
-		<Unit filename="example2/Socket.h" />
+		<Unit filename="EmoEventGetter.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

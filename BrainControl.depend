@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1373050994 source:c:\users\joe\braincontrol\emoeventgetter.cpp
+	"EmoStateDLL.h"
+	"edk.h"
+	<windows.h>
+	<iostream>
+	<sstream>
+	<stdexcept>
+
+1266463222 c:\program files (x86)\emotiv development kit_v1.0.0.3-premium\doc\examples\include\emostatedll.h
+	<sys/types.h>
+
+1266463222 c:\program files (x86)\emotiv development kit_v1.0.0.3-premium\doc\examples\include\edk.h
+	"edkErrorCode.h"
+	"EmoStateDLL.h"
+
+1266463222 c:\program files (x86)\emotiv development kit_v1.0.0.3-premium\doc\examples\include\edkerrorcode.h
+

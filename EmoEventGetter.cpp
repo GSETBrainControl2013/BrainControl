@@ -43,69 +43,100 @@ public:
     }
 };
 
-void sendExpressivAnimation(std::ostream& out, EmoStateHandle eState) {
+struct Expression {
+    enum EyeState {
+        NOTHING = 0,
+        BLINK   = 1<<0,
+        LWINK   = 1<<1,
+        RWINK   = 1<<2,
+        LLOOK   = 1<<3,
+        RLOOK   = 1<<4
+    };
 
-    std::ostringstream output;
+    unsigned eyeState;
+    EE_ExpressivAlgo_t upperFace,lowerFace;
+    float upperFacePwr,lowerFacePwr;
 
-	EE_ExpressivAlgo_t upperFaceType = ES_ExpressivGetUpperFaceAction(eState);
-	EE_ExpressivAlgo_t lowerFaceType = ES_ExpressivGetLowerFaceAction(eState);
+    Expression(unsigned _eyeState = NOTHING,
+               EE_ExpressivAlgo_t _upperFace = EXP_NEUTRAL,
+               float _upperFacePwr = 0,
+               EE_ExpressivAlgo_t _lowerFace = EXP_NEUTRAL,
+               float _lowerFacePwr = 0) :
+                   eyeState(_eyeState),
+                   upperFace(_upperFace),
+                   lowerFace(_lowerFace),
+                   upperFacePwr(_upperFacePwr),
+                   lowerFacePwr(_lowerFacePwr) {}
+};
 
-	float upperFaceAmp = ES_ExpressivGetUpperFaceActionPower(eState);
-	float lowerFaceAmp = ES_ExpressivGetLowerFaceActionPower(eState);
-
-	if (ES_ExpressivIsBlink(eState)) {
-		output << "B,";
-	}
-
-	if (ES_ExpressivIsLeftWink(eState)) {
-		output << "l,";
-	}
-
-	if (ES_ExpressivIsRightWink(eState)) {
-		output << "r,";
-	}
-
-	if (ES_ExpressivIsLookingRight(eState)) {
-		output << "R,";
-	}
-
-	if (ES_ExpressivIsLookingLeft(eState)) {
-		output << "L,";
-	}
-
-	if (upperFaceAmp > 0.0) {
-		switch (upperFaceType) {
-			case EXP_EYEBROW:	output << "b";	break;
-			case EXP_FURROW:    output << "f";  break;
+std::ostream& operator<<(std::ostream& os,const Expression& e) {
+    std::ostringstream str;
+    if(e.eyeState & Expression::BLINK) {
+        str << "B,";
+    }
+    if(e.eyeState & Expression::LWINK) {
+        str << "l,";
+    }
+    if(e.eyeState & Expression::RWINK) {
+        str << "r,";
+    }
+    if(e.eyeState & Expression::RLOOK) {
+        str << "R,";
+    }
+    if(e.eyeState & Expression::LLOOK) {
+        str << "L,";
+    }
+    if(e.upperFacePwr > 0) {
+		switch (e.upperFace) {
+			case EXP_EYEBROW:	str << "b";	break;
+			case EXP_FURROW:    str << "f";  break;
 			default:			break;
 		}
-		output << static_cast<int>(upperFaceAmp*100.0f) << ",";
-	}
-
-	if (lowerFaceAmp > 0.0) {
-		switch (lowerFaceType) {
-			case EXP_CLENCH:	output << "G";	break;
-			case EXP_SMILE:		output << "S";	break;
-			case EXP_LAUGH:     output << "H";  break;
-			case EXP_SMIRK_LEFT:  output << "sl"; break;
-			case EXP_SMIRK_RIGHT: output << "sr"; break;
+		str << (int)(e.upperFacePwr*100) << ",";
+    }
+    if(e.lowerFacePwr > 0) {
+        switch (e.lowerFace) {
+			case EXP_CLENCH:	str << "G";	break;
+			case EXP_SMILE:		str << "S";	break;
+			case EXP_LAUGH:     str << "H";  break;
+			case EXP_SMIRK_LEFT:  str << "sl"; break;
+			case EXP_SMIRK_RIGHT: str << "sr"; break;
 			default:			break;
 		}
-		output << static_cast<int>(lowerFaceAmp*100.0f) << ",";
-	}
+		str << (int)(e.lowerFacePwr*100) << ",";
+    }
+    std::string outStr = str.str();
+    if(outStr.empty()) {
+        os << "neutral";
+    } else {
+        os << outStr.substr(0,outStr.length()-1);
+    }
+    return os;
+}
 
-	std::string outString = output.str();
+Expression extractExpression(EmoStateHandle state) {
+    Expression ret;
+    ret.upperFace = ES_ExpressivGetUpperFaceAction(state);
+    ret.lowerFace = ES_ExpressivGetUpperFaceAction(state);
+    ret.upperFacePwr = ES_ExpressivGetUpperFaceAction(state);
+    ret.lowerFacePwr = ES_ExpressivGetLowerFaceAction(state);
 
-	// Remove the last comma
-	if (outString.length()) {
-		outString.resize(outString.length()-1);
-	}
-
-	if (!outString.length()) {
-		outString = std::string("neutral");
-	}
-
-	out << outString;
+    if(ES_ExpressivIsBlink(state)) {
+        ret.eyeState |= Expression::BLINK;
+    }
+    if(ES_ExpressivIsLeftWink(state)) {
+        ret.eyeState |= Expression::LWINK;
+    }
+    if(ES_ExpressivIsRightWink(state)) {
+        ret.eyeState |= Expression::RWINK;
+    }
+    if(ES_ExpressivIsLookingRight(state)) {
+        ret.eyeState |= Expression::RLOOK;
+    }
+    if(ES_ExpressivIsLookingLeft(state)) {
+        ret.eyeState |= Expression::LLOOK;
+    }
+    return ret;
 }
 
 int main() {
@@ -121,8 +152,7 @@ int main() {
 
 			if(eventType == EE_EmoStateUpdated) {
                 EmoStateHandle state = engine.eventState();
-                sendExpressivAnimation(std::cout, state);
-                std::cout << std::endl;
+                std::cout << extractExpression(state) << std::endl;
 			}
         }
 
