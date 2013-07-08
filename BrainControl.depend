@@ -16,12 +16,29 @@
 
 1266463222 c:\program files (x86)\emotiv development kit_v1.0.0.3-premium\doc\examples\include\edkerrorcode.h
 
-1373248638 source:c:\users\joe\dropbox\braincontrol\emoeventgetter.cpp
+1373311015 source:c:\users\joe\dropbox\braincontrol\emoeventgetter.cpp
 	"EmoStateDLL.h"
+	"edk.h"
+	<iostream>
+	"EmoEngine.hpp"
+	"Expression.hpp"
+	"ExpressionProcessor.hpp"
+
+1373311037 c:\users\joe\dropbox\braincontrol\emoengine.hpp
+	"edk.h"
+	<stdexcept>
+	<queue>
+
+1373311014 c:\users\joe\dropbox\braincontrol\expression.hpp
 	"edk.h"
 	<windows.h>
 	<iostream>
+
+1373311076 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
+	"Expression.hpp"
+	"EmoEngine.hpp"
+
+1373310994 source:c:\users\joe\dropbox\braincontrol\expression.cpp
+	"Expression.hpp"
 	<sstream>
-	<stdexcept>
-	<queue>
 
