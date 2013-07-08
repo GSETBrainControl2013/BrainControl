@@ -141,17 +141,17 @@ Expression extractExpression(EmoStateHandle state) {
 }
 
 class ExpressionProcessor {
-    const float MIN_UPPER_PWR = 0.5,
-                MIN_LOWER_PWR = 0.2;
-    const DWORD DECAY_TIME    = 0.5*1000;
+    static const float MIN_UPPER_PWR,
+                       MIN_LOWER_PWR;
+    static const DWORD DECAY_TIME;
     std::queue<Expression> _processed;
     std::vector<std::pair<DWORD,Expression> > _prevExpressions;
 
 public:
-    EventProcessor() {}
+    ExpressionProcessor() {}
 
     void process(const Expression& e) {
-        DWORD currTime = getTickCount();
+        DWORD currTime = GetTickCount();
         Expression processed = e;
         if(processed.upperFacePwr < MIN_UPPER_PWR) {
             processed.upperFacePwr = 0;
@@ -162,18 +162,17 @@ public:
             processed.upperFace = EXP_NEUTRAL;
         }
         _prevExpressions.push_back(std::make_pair(currTime,processed));
-        processed.eyeState &= ~(prevExpressions.end()-1)->eyeState;
-        bool newExpression = false;
+        processed.eyeState &= ~(_prevExpressions.end()-1)->second.eyeState;
         for(std::vector<std::pair<DWORD,Expression> >::iterator i=_prevExpressions.begin();
              i != _prevExpressions.end();++i) {
             if(i->first-currTime > DECAY_TIME) {
-                prevExpressions.erase(i--);
+                _prevExpressions.erase(i--);
             } else {
-                if(i->upperFace == processed.upperFace) {
-                    _processed.upperFace = EXP_NEUTRAL;
+                if(i->second.upperFace == processed.upperFace) {
+                    processed.upperFace = EXP_NEUTRAL;
                     processed.upperFacePwr = 0;
                 }
-                if(i->lowerFace == processed.lowerFace) {
+                if(i->second.lowerFace == processed.lowerFace) {
                     processed.lowerFace = EXP_NEUTRAL;
                     processed.lowerFacePwr = 0;
                 }
@@ -193,6 +192,9 @@ public:
         return true;
     }
 };
+const float ExpressionProcessor::MIN_UPPER_PWR = 0.5,
+            ExpressionProcessor::MIN_LOWER_PWR = 0.2;
+const DWORD ExpressionProcessor::DECAY_TIME    = 0.5*1000;
 
 void pumpEvents(EmoEngine& engine,ExpressionProcessor& processor) {
     while(engine.retrieveEvent()) {
@@ -210,6 +212,7 @@ void pumpEvents(EmoEngine& engine,ExpressionProcessor& processor) {
 }
 
 int main() {
+
 	EmoEngine engine;
 	ExpressionProcessor processor;
 
