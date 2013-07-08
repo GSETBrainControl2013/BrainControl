@@ -16,3 +16,12 @@
 
 1266463222 c:\program files (x86)\emotiv development kit_v1.0.0.3-premium\doc\examples\include\edkerrorcode.h
 
+1373248638 source:c:\users\joe\dropbox\braincontrol\emoeventgetter.cpp
+	"EmoStateDLL.h"
+	"edk.h"
+	<windows.h>
+	<iostream>
+	<sstream>
+	<stdexcept>
+	<queue>
+

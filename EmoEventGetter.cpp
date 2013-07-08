@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include <QDeclarativeView>
+#include <queue>
 
 class EmoEngine {
 	EmoEngineEventHandle _event;
@@ -73,35 +73,35 @@ struct Expression {
 std::ostream& operator<<(std::ostream& os,const Expression& e) {
     std::ostringstream str;
     if(e.eyeState & Expression::BLINK) {
-        str << "B,";
+        str << "Blink,";
     }
     if(e.eyeState & Expression::LWINK) {
-        str << "l,";
+        str << "LWink,";
     }
     if(e.eyeState & Expression::RWINK) {
-        str << "r,";
+        str << "RWink,";
     }
     if(e.eyeState & Expression::RLOOK) {
-        str << "R,";
+        str << "RLook,";
     }
     if(e.eyeState & Expression::LLOOK) {
-        str << "L,";
+        str << "LLook,";
     }
     if(e.upperFacePwr > 0) {
 		switch (e.upperFace) {
-			case EXP_EYEBROW:	str << "b";	break;
-			case EXP_FURROW:    str << "f";  break;
+			case EXP_EYEBROW:	str << "eyebrow";	break;
+			case EXP_FURROW:    str << "furrow";  break;
 			default:			break;
 		}
 		str << (int)(e.upperFacePwr*100) << ",";
     }
     if(e.lowerFacePwr > 0) {
         switch (e.lowerFace) {
-			case EXP_CLENCH:	str << "G";	break;
-			case EXP_SMILE:		str << "S";	break;
-			case EXP_LAUGH:     str << "H";  break;
-			case EXP_SMIRK_LEFT:  str << "sl"; break;
-			case EXP_SMIRK_RIGHT: str << "sr"; break;
+			case EXP_CLENCH:	str << "Clench";	break;
+			case EXP_SMILE:		str << "Smile";	break;
+			case EXP_LAUGH:     str << "Laugh";  break;
+			case EXP_SMIRK_LEFT:  str << "LSmirk"; break;
+			case EXP_SMIRK_RIGHT: str << "RSmirk"; break;
 			default:			break;
 		}
 		str << (int)(e.lowerFacePwr*100) << ",";
@@ -118,9 +118,9 @@ std::ostream& operator<<(std::ostream& os,const Expression& e) {
 Expression extractExpression(EmoStateHandle state) {
     Expression ret;
     ret.upperFace = ES_ExpressivGetUpperFaceAction(state);
-    ret.lowerFace = ES_ExpressivGetUpperFaceAction(state);
-    ret.upperFacePwr = ES_ExpressivGetUpperFaceAction(state);
-    ret.lowerFacePwr = ES_ExpressivGetLowerFaceAction(state);
+    ret.lowerFace = ES_ExpressivGetLowerFaceAction(state);
+    ret.upperFacePwr = ES_ExpressivGetUpperFaceActionPower(state);
+    ret.lowerFacePwr = ES_ExpressivGetLowerFaceActionPower(state);
 
     if(ES_ExpressivIsBlink(state)) {
         ret.eyeState |= Expression::BLINK;
@@ -140,30 +140,93 @@ Expression extractExpression(EmoStateHandle state) {
     return ret;
 }
 
+class ExpressionProcessor {
+    static const float MIN_UPPER_PWR,
+                       MIN_LOWER_PWR;
+    static const DWORD DECAY_TIME;
+    std::queue<Expression> _processed;
+    std::vector<std::pair<DWORD,Expression> > _prevExpressions;
+
+public:
+    ExpressionProcessor() {}
+
+    void process(const Expression& e) {
+        //std::cout << "Processing: " << e << std::endl;
+        DWORD currTime = GetTickCount();
+        Expression processed = e;
+        if(processed.upperFacePwr < MIN_UPPER_PWR) {
+            processed.upperFacePwr = 0;
+            processed.upperFace = EXP_NEUTRAL;
+        }
+        if(processed.lowerFacePwr < MIN_UPPER_PWR) {
+            processed.upperFacePwr = 0;
+            processed.upperFace = EXP_NEUTRAL;
+        }
+        Expression toAdd = processed;
+        if(!_prevExpressions.empty()) {
+            processed.eyeState &= ~(_prevExpressions.end()-1)->second.eyeState;
+        }
+        for(std::vector<std::pair<DWORD,Expression> >::iterator i=_prevExpressions.begin();
+             i != _prevExpressions.end();++i) {
+            if(currTime-i->first > DECAY_TIME) {
+                _prevExpressions.erase(i--);
+            } else {
+                if(i->second.upperFace == processed.upperFace) {
+                    processed.upperFace = EXP_NEUTRAL;
+                    processed.upperFacePwr = 0;
+                }
+                if(i->second.lowerFace == processed.lowerFace) {
+                    processed.lowerFace = EXP_NEUTRAL;
+                    processed.lowerFacePwr = 0;
+                }
+            }
+        }
+        _prevExpressions.push_back(std::make_pair(currTime,toAdd));
+        if(processed.upperFace != EXP_NEUTRAL || processed.lowerFace != EXP_NEUTRAL ||
+           processed.eyeState != Expression::NOTHING) {
+            _processed.push(processed);
+        }
+    }
+    bool getExpression(Expression& e) {
+        if(_processed.empty()) {
+            return false;
+        }
+        e = _processed.front();
+        _processed.pop();
+        return true;
+    }
+};
+const float ExpressionProcessor::MIN_UPPER_PWR = 0,
+            ExpressionProcessor::MIN_LOWER_PWR = 0;
+const DWORD ExpressionProcessor::DECAY_TIME    = 0.5*1000;
+
+void pumpEvents(EmoEngine& engine,ExpressionProcessor& processor) {
+    while(engine.retrieveEvent()) {
+        EmoEngineEventHandle event = engine.event();
+
+        unsigned userID;
+        EE_Event_t eventType = EE_EmoEngineEventGetType(event);
+        EE_EmoEngineEventGetUserId(event, &userID);
+
+        if(eventType == EE_EmoStateUpdated) {
+            EmoStateHandle state = engine.eventState();
+            processor.process(extractExpression(state));
+        }
+    }
+}
+
 int main() {
 
-    QDeclarativeView view;
-    view.setSource(QUrl::fromLocalFile("textpad.qml"));
-    view.show();
-    QObject *object = view.rootObject();
-    object->setProperty("width", 500);
-
 	EmoEngine engine;
+	ExpressionProcessor processor;
 
 	while(1) {
-        while(engine.retrieveEvent()) {
-            EmoEngineEventHandle event = engine.event();
+        pumpEvents(engine,processor);
 
-            unsigned userID;
-            EE_Event_t eventType = EE_EmoEngineEventGetType(event);
-			EE_EmoEngineEventGetUserId(event, &userID);
-
-			if(eventType == EE_EmoStateUpdated) {
-                EmoStateHandle state = engine.eventState();
-                std::cout << extractExpression(state) << std::endl;
-			}
+        Expression e;
+        while(processor.getExpression(e)) {
+            std::cout << "Processed: " << e << std::endl;
         }
-
 		Sleep(1);
 	}
 }
