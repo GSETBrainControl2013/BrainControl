@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <queue>
 
 class EmoEngine {
 	EmoEngineEventHandle _event;
@@ -139,23 +140,86 @@ Expression extractExpression(EmoStateHandle state) {
     return ret;
 }
 
+class ExpressionProcessor {
+    const float MIN_UPPER_PWR = 0.5,
+                MIN_LOWER_PWR = 0.2;
+    const DWORD DECAY_TIME    = 0.5*1000;
+    std::queue<Expression> _processed;
+    std::vector<std::pair<DWORD,Expression> > _prevExpressions;
+
+public:
+    EventProcessor() {}
+
+    void process(const Expression& e) {
+        DWORD currTime = getTickCount();
+        Expression processed = e;
+        if(processed.upperFacePwr < MIN_UPPER_PWR) {
+            processed.upperFacePwr = 0;
+            processed.upperFace = EXP_NEUTRAL;
+        }
+        if(processed.lowerFacePwr < MIN_UPPER_PWR) {
+            processed.upperFacePwr = 0;
+            processed.upperFace = EXP_NEUTRAL;
+        }
+        _prevExpressions.push_back(std::make_pair(currTime,processed));
+        processed.eyeState &= ~(prevExpressions.end()-1)->eyeState;
+        bool newExpression = false;
+        for(std::vector<std::pair<DWORD,Expression> >::iterator i=_prevExpressions.begin();
+             i != _prevExpressions.end();++i) {
+            if(i->first-currTime > DECAY_TIME) {
+                prevExpressions.erase(i--);
+            } else {
+                if(i->upperFace == processed.upperFace) {
+                    _processed.upperFace = EXP_NEUTRAL;
+                    processed.upperFacePwr = 0;
+                }
+                if(i->lowerFace == processed.lowerFace) {
+                    processed.lowerFace = EXP_NEUTRAL;
+                    processed.lowerFacePwr = 0;
+                }
+            }
+        }
+        if(processed.upperFace != EXP_NEUTRAL || processed.lowerFace != EXP_NEUTRAL ||
+           processed.eyeState != 0) {
+            _processed.push(processed);
+        }
+    }
+    bool getExpression(Expression& e) {
+        if(_processed.empty()) {
+            return false;
+        }
+        e = _processed.front();
+        _processed.pop();
+        return true;
+    }
+};
+
+void pumpEvents(EmoEngine& engine,ExpressionProcessor& processor) {
+    while(engine.retrieveEvent()) {
+        EmoEngineEventHandle event = engine.event();
+
+        unsigned userID;
+        EE_Event_t eventType = EE_EmoEngineEventGetType(event);
+        EE_EmoEngineEventGetUserId(event, &userID);
+
+        if(eventType == EE_EmoStateUpdated) {
+            EmoStateHandle state = engine.eventState();
+            processor.process(extractExpression(state));
+        }
+    }
+}
+
 int main() {
 	EmoEngine engine;
+	ExpressionProcessor processor;
 
 	while(1) {
-        while(engine.retrieveEvent()) {
-            EmoEngineEventHandle event = engine.event();
+        pumpEvents(engine,processor);
 
-            unsigned userID;
-            EE_Event_t eventType = EE_EmoEngineEventGetType(event);
-			EE_EmoEngineEventGetUserId(event, &userID);
-
-			if(eventType == EE_EmoStateUpdated) {
-                EmoStateHandle state = engine.eventState();
-                std::cout << extractExpression(state) << std::endl;
-			}
+        Expression e;
+        while(processor.getExpression(e)) {
+            std::cout << e << std::endl;
         }
-
 		Sleep(1);
 	}
 }
