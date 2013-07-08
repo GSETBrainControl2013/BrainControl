@@ -37,6 +37,9 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="EmoEventGetter.cpp" />
+		<Unit filename="TST.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
