@@ -36,10 +36,15 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="EmoEventGetter.cpp" />
+		<Unit filename="EmoEngine.hpp" />
+		<Unit filename="Expression.cpp" />
+		<Unit filename="Expression.hpp" />
+		<Unit filename="ExpressionProcessor.cpp" />
+		<Unit filename="ExpressionProcessor.hpp" />
 		<Unit filename="TST.cpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
