@@ -119,8 +119,8 @@ Expression extractExpression(EmoStateHandle state) {
     Expression ret;
     ret.upperFace = ES_ExpressivGetUpperFaceAction(state);
     ret.lowerFace = ES_ExpressivGetUpperFaceAction(state);
-    ret.upperFacePwr = ES_ExpressivGetUpperFaceAction(state);
-    ret.lowerFacePwr = ES_ExpressivGetLowerFaceAction(state);
+    ret.upperFacePwr = ES_ExpressivGetUpperFaceActionPower(state);
+    ret.lowerFacePwr = ES_ExpressivGetLowerFaceActionPower(state);
 
     if(ES_ExpressivIsBlink(state)) {
         ret.eyeState |= Expression::BLINK;
