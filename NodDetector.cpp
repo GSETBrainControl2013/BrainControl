@@ -13,9 +13,32 @@ inline T sign(T x) {
 
 void NodDetector::_fixWindow() {
     DWORD minTime = GetTickCount()-WINDOW_DURATION;
+    _GyroReading prevReading;
     for(std::list<_GyroReading>::iterator i=_signalWindow.begin();
          i != _signalWindow.end();++i) {
-        if(i->time > minTime) {
+        if(i->time <= minTime) {
+
+            bool xBaseLine = (std::abs(i->x) <= MAX_BASELINE),
+                 yBaseLine = (std::abs(i->y) <= MAX_BASELINE);
+            if(i != _signalWindow.begin()) {
+                xBaseLine = (xBaseLine && std::abs(prevReading.x) <= MAX_BASELINE);
+                yBaseLine = (yBaseLine && std::abs(prevReading.y) <= MAX_BASELINE);
+            }
+            std::list<_GyroReading>::iterator j = i;
+            ++j;
+            if(j != _signalWindow.end()) {
+                xBaseLine = (xBaseLine && std::abs(j->x) <= MAX_BASELINE);
+                yBaseLine = (yBaseLine && std::abs(j->y) <= MAX_BASELINE);
+            }
+            if(i->time > _lastXPulse && !xBaseLine) {
+                _lastXPulse = i->time;
+            }
+            if(i->time > _lastYPulse && !yBaseLine) {
+                _lastYPulse = i->time;
+            }
+        }
+        prevReading = *i;
+        if(i->time >= minTime) {
             _signalWindow.erase(_signalWindow.begin(),i);
             break;
         }
@@ -48,23 +71,18 @@ void NodDetector::getNod(int& x,int& y) {
     }
     _GyroReading first = *_signalWindow.begin();
     if(_lastXPulse < first.time && std::abs(first.x) <= MAX_BASELINE) {
-        int minVal = std::numeric_limits<int>::max(),
-            maxVal = std::numeric_limits<int>::min();
-        DWORD minValTime,maxValTime;
+        int maxVal = 0;
+        DWORD maxValTime;
         for(std::list<_GyroReading>::iterator i=_signalWindow.begin();
              i != _signalWindow.end();++i) {
-            if(i->x < minVal) {
-                minVal = i->x;
-                minValTime = i->time;
-            }
-            if(i->x > maxVal) {
+            if(std::abs(i->x) > std::abs(maxVal)) {
                 maxVal = i->x;
                 maxValTime = i->time;
             }
         }
-        if(maxVal-minVal > MIN_INTENSITY && maxValTime != minValTime) {
-            x = sign(maxVal-minVal)/sign(maxValTime-minValTime);
-            _lastXPulse = std::max(maxValTime,minValTime);
+        if(std::abs(maxVal) > MIN_INTENSITY) {
+            x = sign(maxVal);
+            _lastXPulse = maxValTime;
         } else {
             x = 0;
         }
@@ -72,23 +90,18 @@ void NodDetector::getNod(int& x,int& y) {
         x = 0;
     }
     if(_lastYPulse < first.time && std::abs(first.y) <= MAX_BASELINE) {
-        int minVal = std::numeric_limits<int>::max(),
-            maxVal = std::numeric_limits<int>::min();
-        DWORD minValTime,maxValTime;
+        int maxVal = 0;
+        DWORD maxValTime;
         for(std::list<_GyroReading>::iterator i=_signalWindow.begin();
              i != _signalWindow.end();++i) {
-            if(i->y < minVal) {
-                minVal = i->y;
-                minValTime = i->time;
-            }
-            if(i->y > maxVal) {
+            if(std::abs(i->y) > std::abs(maxVal)) {
                 maxVal = i->y;
                 maxValTime = i->time;
             }
         }
-        if(maxVal-minVal > MIN_INTENSITY && maxValTime != minValTime) {
-            y = sign(maxVal-minVal)/sign(maxValTime-minValTime);
-            _lastYPulse = std::max(maxValTime,minValTime);
+        if(std::abs(maxVal) > MIN_INTENSITY) {
+            y = sign(maxVal);
+            _lastYPulse = maxValTime;
         } else {
             y = 0;
         }

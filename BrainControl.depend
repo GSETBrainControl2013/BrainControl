@@ -48,7 +48,7 @@
 1373311321 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
 	"ExpressionProcessor.hpp"
 
-1373329188 source:c:\users\joe\dropbox\braincontrol\main.cpp
+1373334316 source:c:\users\joe\dropbox\braincontrol\main.cpp
 	"EmoStateDLL.h"
 	"edk.h"
 	<iostream>
@@ -57,11 +57,11 @@
 	"ExpressionProcessor.hpp"
 	"NodDetector.hpp"
 
-1373331412 c:\users\joe\dropbox\braincontrol\noddetector.hpp
+1373397548 c:\users\joe\dropbox\braincontrol\noddetector.hpp
 	<windows.h>
 	<list>
 
-1373331287 source:c:\users\joe\dropbox\braincontrol\noddetector.cpp
+1373397484 source:c:\users\joe\dropbox\braincontrol\noddetector.cpp
 	"NodDetector.hpp"
 	<limits>
 	<cstdlib>

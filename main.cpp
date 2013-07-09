@@ -22,15 +22,16 @@ int main() {
         int x,y;
         nod.getNod(x,y);
         if(x > 0) {
-            std::cout << "Shake left" << std::endl;
-        } else if(x < 0) {
             std::cout << "Shake right" << std::endl;
+        } else if(x < 0) {
+            std::cout << "Shake left" << std::endl;
         }
         if(y > 0) {
             std::cout << "Nod up" << std::endl;
         } else if(y < 0) {
             std::cout << "Nod down" << std::endl;
         }
+        std::cout.flush();
 		Sleep(1);
 	}
 }

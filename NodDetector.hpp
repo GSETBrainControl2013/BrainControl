@@ -5,9 +5,9 @@
 #include <list>
 
 class NodDetector {
-    static const DWORD WINDOW_DURATION = 0.5*1000;
-    static const int MAX_BASELINE  = 10,
-                     MIN_INTENSITY = 40;
+    static const DWORD WINDOW_DURATION = 1*1000;
+    static const int MAX_BASELINE  = 3,
+                     MIN_INTENSITY = 100;
 
     struct _GyroReading {
         int x,y;
