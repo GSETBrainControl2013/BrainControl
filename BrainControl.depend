@@ -24,21 +24,47 @@
 	"Expression.hpp"
 	"ExpressionProcessor.hpp"
 
-1373311037 c:\users\joe\dropbox\braincontrol\emoengine.hpp
+1373311903 c:\users\joe\dropbox\braincontrol\emoengine.hpp
 	"edk.h"
 	<stdexcept>
 	<queue>
 
-1373311014 c:\users\joe\dropbox\braincontrol\expression.hpp
+1373312659 c:\users\joe\dropbox\braincontrol\expression.hpp
 	"edk.h"
 	<windows.h>
 	<iostream>
 
-1373311076 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
+1373311304 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
 	"Expression.hpp"
 	"EmoEngine.hpp"
 
-1373310994 source:c:\users\joe\dropbox\braincontrol\expression.cpp
+1373311261 source:c:\users\joe\dropbox\braincontrol\expression.cpp
 	"Expression.hpp"
 	<sstream>
+
+1373311900 source:c:\users\joe\dropbox\braincontrol\emoengine.cpp
+	"EmoEngine.hpp"
+
+1373311321 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
+	"ExpressionProcessor.hpp"
+
+1373329188 source:c:\users\joe\dropbox\braincontrol\main.cpp
+	"EmoStateDLL.h"
+	"edk.h"
+	<iostream>
+	"EmoEngine.hpp"
+	"Expression.hpp"
+	"ExpressionProcessor.hpp"
+	"NodDetector.hpp"
+
+1373331412 c:\users\joe\dropbox\braincontrol\noddetector.hpp
+	<windows.h>
+	<list>
+
+1373331287 source:c:\users\joe\dropbox\braincontrol\noddetector.cpp
+	"NodDetector.hpp"
+	<limits>
+	<cstdlib>
+	"edk.h"
+	<iostream>
 

@@ -1,21 +1,11 @@
 #include "ExpressionProcessor.hpp"
 
-const float ExpressionProcessor::MIN_UPPER_PWR = 0,
-            ExpressionProcessor::MIN_LOWER_PWR = 0;
-const DWORD ExpressionProcessor::DECAY_TIME    = 0.5*1000;
+const DWORD ExpressionProcessor::DECAY_TIME = 0.5*1000;
 
 void ExpressionProcessor::process(const Expression& e) {
     //std::cout << "Processing: " << e << std::endl;
     DWORD currTime = GetTickCount();
     Expression processed = e;
-    if(processed.upperFacePwr < MIN_UPPER_PWR) {
-        processed.upperFacePwr = 0;
-        processed.upperFace = EXP_NEUTRAL;
-    }
-    if(processed.lowerFacePwr < MIN_UPPER_PWR) {
-        processed.upperFacePwr = 0;
-        processed.upperFace = EXP_NEUTRAL;
-    }
     Expression toAdd = processed;
     if(!_prevExpressions.empty()) {
         processed.eyeState &= ~(_prevExpressions.end()-1)->second.eyeState;

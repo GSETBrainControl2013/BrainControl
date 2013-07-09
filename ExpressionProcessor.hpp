@@ -5,8 +5,6 @@
 #include "EmoEngine.hpp"
 
 class ExpressionProcessor {
-    static const float MIN_UPPER_PWR,
-                       MIN_LOWER_PWR;
     static const DWORD DECAY_TIME;
     std::queue<Expression> _processed;
     std::vector<std::pair<DWORD,Expression> > _prevExpressions;

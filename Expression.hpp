@@ -19,6 +19,7 @@ struct Expression {
     unsigned eyeState;
     EE_ExpressivAlgo_t upperFace,lowerFace;
     float upperFacePwr,lowerFacePwr;
+    int headX,headY; // >0 means right/up, <0 means left/down,0 means nothing
 
     Expression(unsigned _eyeState = NOTHING,
                EE_ExpressivAlgo_t _upperFace = EXP_NEUTRAL,

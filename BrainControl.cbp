@@ -36,11 +36,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="EmoEngine.cpp" />
 		<Unit filename="EmoEngine.hpp" />
 		<Unit filename="Expression.cpp" />
 		<Unit filename="Expression.hpp" />
 		<Unit filename="ExpressionProcessor.cpp" />
 		<Unit filename="ExpressionProcessor.hpp" />
+		<Unit filename="NodDetector.cpp" />
+		<Unit filename="NodDetector.hpp" />
 		<Unit filename="TST.cpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
