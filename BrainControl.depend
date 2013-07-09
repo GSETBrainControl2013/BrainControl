@@ -29,26 +29,27 @@
 	<stdexcept>
 	<queue>
 
-1373312659 c:\users\joe\dropbox\braincontrol\expression.hpp
+1373399185 c:\users\joe\dropbox\braincontrol\expression.hpp
 	"edk.h"
 	<windows.h>
 	<iostream>
 
-1373311304 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
+1373399953 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
 	"Expression.hpp"
 	"EmoEngine.hpp"
+	"NodDetector.hpp"
 
-1373311261 source:c:\users\joe\dropbox\braincontrol\expression.cpp
+1373399452 source:c:\users\joe\dropbox\braincontrol\expression.cpp
 	"Expression.hpp"
 	<sstream>
 
 1373311900 source:c:\users\joe\dropbox\braincontrol\emoengine.cpp
 	"EmoEngine.hpp"
 
-1373311321 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
+1373401039 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
 	"ExpressionProcessor.hpp"
 
-1373334316 source:c:\users\joe\dropbox\braincontrol\main.cpp
+1373401015 source:c:\users\joe\dropbox\braincontrol\main.cpp
 	"EmoStateDLL.h"
 	"edk.h"
 	<iostream>

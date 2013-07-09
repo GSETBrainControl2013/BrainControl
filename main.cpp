@@ -9,16 +9,17 @@
 int main() {
 	EmoEngine engine;
 	ExpressionProcessor processor;
-	NodDetector nod;
+	//NodDetector nod;
 
 	while(1) {
-        nod.read();
+        //nod.read();
         processor.processEvents(engine);
 
         Expression e;
         while(processor.getExpression(e)) {
             std::cout << "Processed: " << e << std::endl;
         }
+#if 0
         int x,y;
         nod.getNod(x,y);
         if(x > 0) {
@@ -31,6 +32,7 @@ int main() {
         } else if(y < 0) {
             std::cout << "Nod down" << std::endl;
         }
+#endif
         std::cout.flush();
 		Sleep(1);
 	}

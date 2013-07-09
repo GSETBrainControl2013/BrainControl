@@ -14,24 +14,27 @@ struct Expression {
         LLOOK   = 1<<3,
         RLOOK   = 1<<4
     };
+    enum Event {
+		NEUTRAL = 0,
+		EYEBROW,
+		FURROW,
+        SMILE,
+		CLENCH,
+		LAUGH,
+		LSMIRK,
+		RSMIRK,
+		NOD_UP,
+		NOD_DOWN,
+		SHAKE_LEFT,
+		SHAKE_RIGHT
+    };
 
     DWORD time;
     unsigned eyeState;
-    EE_ExpressivAlgo_t upperFace,lowerFace;
-    float upperFacePwr,lowerFacePwr;
-    int headX,headY; // >0 means right/up, <0 means left/down,0 means nothing
+    Event event;
+    float power;
 
-    Expression(unsigned _eyeState = NOTHING,
-               EE_ExpressivAlgo_t _upperFace = EXP_NEUTRAL,
-               float _upperFacePwr = 0,
-               EE_ExpressivAlgo_t _lowerFace = EXP_NEUTRAL,
-               float _lowerFacePwr = 0) :
-                   eyeState(_eyeState),
-                   upperFace(_upperFace),
-                   lowerFace(_lowerFace),
-                   upperFacePwr(_upperFacePwr),
-                   lowerFacePwr(_lowerFacePwr) {}
-    Expression(EmoStateHandle state);
+    static Event toEvent(EE_ExpressivAlgo_t exp);
 };
 
 std::ostream& operator<<(std::ostream& os,const Expression& e);
