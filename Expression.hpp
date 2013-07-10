@@ -26,7 +26,9 @@ struct Expression {
 		NOD_UP,
 		NOD_DOWN,
 		SHAKE_LEFT,
-		SHAKE_RIGHT
+		SHAKE_RIGHT,
+		THOUGHT_LIFT,
+		THOUGHT_DROP
     };
 
     DWORD time;
@@ -35,6 +37,7 @@ struct Expression {
     float power;
 
     static Event toEvent(EE_ExpressivAlgo_t exp);
+    static Event toEvent(EE_CognitivAction_t cog);
 };
 
 std::ostream& operator<<(std::ostream& os,const Expression& e);

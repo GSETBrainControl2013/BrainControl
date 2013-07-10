@@ -29,12 +29,14 @@ void ExpressionProcessor::_readNod() {
 
 void ExpressionProcessor::process(EmoStateHandle state) {
     _Expression e;
-    DWORD currTime = GetTickCount();
-    e.upperFace.time = e.lowerFace.time = currTime;
+    DWORD currTime    = GetTickCount();
+    e.upperFace.time  = e.lowerFace.time = currTime;
     e.upperFace.event = Expression::toEvent(ES_ExpressivGetUpperFaceAction(state));
     e.lowerFace.event = Expression::toEvent(ES_ExpressivGetLowerFaceAction(state));
     e.upperFace.power = ES_ExpressivGetUpperFaceActionPower(state);
     e.lowerFace.power = ES_ExpressivGetLowerFaceActionPower(state);
+    e.thought.event   = Expression::toEvent(ES_CognitivGetCurrentAction(state));
+    e.thought.power   = ES_CognitivGetCurrentActionPower(state);
 
     e.lowerFace.eyeState = e.upperFace.eyeState = 0;
     if(ES_ExpressivIsBlink(state)) {
@@ -80,6 +82,9 @@ void ExpressionProcessor::process(EmoStateHandle state) {
     }
     if(e.upperFace.event != Expression::NEUTRAL) {
         _processed.push(e.upperFace);
+    }
+    if(e.thought.event != Expression::NEUTRAL) {
+        _processed.push(e.thought);
     }
 }
 

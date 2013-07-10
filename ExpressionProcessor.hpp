@@ -7,7 +7,7 @@
 
 class ExpressionProcessor {
     struct _Expression {
-        Expression upperFace,lowerFace;
+        Expression upperFace,lowerFace,thought;
     };
     static const DWORD DECAY_TIME;
     std::queue<Expression> _processed;

@@ -20,17 +20,19 @@ std::ostream& operator<<(std::ostream& os,const Expression& e) {
     }
     if(e.power > 0) {
         switch (e.event) {
-            case Expression::EYEBROW:     str << "Eyebrow";    break;
-            case Expression::FURROW:      str << "Furrow";     break;
-            case Expression::SMILE:       str << "Smile";      break;
-            case Expression::CLENCH:      str << "Clench";     break;
-            case Expression::LAUGH:       str << "Laugh";      break;
-            case Expression::LSMIRK:      str << "LSmirk";     break;
-            case Expression::RSMIRK:      str << "RSmirk";     break;
-            case Expression::NOD_UP:      str << "NodUp";      break;
-            case Expression::NOD_DOWN:    str << "NodDown";    break;
-            case Expression::SHAKE_LEFT:  str << "ShakeLeft";  break;
-            case Expression::SHAKE_RIGHT: str << "ShakeRight"; break;
+            case Expression::EYEBROW:      str << "Eyebrow";     break;
+            case Expression::FURROW:       str << "Furrow";      break;
+            case Expression::SMILE:        str << "Smile";       break;
+            case Expression::CLENCH:       str << "Clench";      break;
+            case Expression::LAUGH:        str << "Laugh";       break;
+            case Expression::LSMIRK:       str << "LSmirk";      break;
+            case Expression::RSMIRK:       str << "RSmirk";      break;
+            case Expression::NOD_UP:       str << "NodUp";       break;
+            case Expression::NOD_DOWN:     str << "NodDown";     break;
+            case Expression::SHAKE_LEFT:   str << "ShakeLeft";   break;
+            case Expression::SHAKE_RIGHT:  str << "ShakeRight";  break;
+            case Expression::THOUGHT_LIFT: str << "ThoughtLift"; break;
+            case Expression::THOUGHT_DROP: str << "ThoughtDrop"; break;
             default:            break;
         }
         str << (int)(e.power*100) << ",";
@@ -60,6 +62,18 @@ Expression::Event Expression::toEvent(EE_ExpressivAlgo_t exp) {
         return LSMIRK;
     case EXP_SMIRK_RIGHT:
         return RSMIRK;
+    default:
+        break;
+    }
+    return NEUTRAL;
+}
+
+Expression::Event Expression::toEvent(EE_CognitivAction_t cog) {
+    switch(cog) {
+    case COG_LIFT:
+        return THOUGHT_LIFT;
+    case COG_DROP:
+        return THOUGHT_DROP;
     default:
         break;
     }
