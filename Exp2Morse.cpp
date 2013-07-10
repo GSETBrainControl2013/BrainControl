@@ -13,16 +13,16 @@ int main(){
 }
 
 void translateExp(Expression inputExp){
-    if (inputExp.lowerFace == EXP_SMIRK_LEFT){
+    if (inputExp == Expression::LSMIRK){
         resultString += "-";
     }
-    else if (inputExp.lowerFace == EXP_SMIRK_RIGHT){
+    else if (inputExp == Expression::RSMIRK){
         resultString += ".";
     }
-    else if (inputExp.upperFace == EXP_FURROW){
+    else if (inputExp == Expression::FURROW){
         resultString += " ";
     }
-    //use right nod for spacing between words
-    //space will be indicated by / character
-
+    else if (inputExp == Expression::SHAKE_RIGHT) {
+        resultString += "/";
+    }
 }
