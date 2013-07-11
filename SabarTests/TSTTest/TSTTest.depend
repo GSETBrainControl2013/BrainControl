@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1373399103 source:c:\users\navin\gset\brain control\tsttest\string.cpp
+	"mystring.h"
+	<cstdio>
+
+1373398995 c:\users\navin\gset\brain control\tsttest\mystring.h
+	<stdlib.h>
+	<iostream>
+	<assert.h>
+	<string.h>
+
+1373421162 source:c:\users\navin\gset\brain control\tsttest\main.cpp
+	"ternarySearchTree.h"
+	<iostream>
+	"vector.h"
+	<time.h>
+
+1373399053 c:\users\navin\gset\brain control\tsttest\ternarysearchtree.h
+	"vector.h"
+	"mystring.h"
+	<stdlib.h>
+
+1373398259 c:\users\navin\gset\brain control\tsttest\vector.h
+	<stdio.h>
+	<assert.h>
+

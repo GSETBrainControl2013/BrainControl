@@ -4,7 +4,6 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include <QDeclarativeView>
 
 class EmoEngine {
 	EmoEngineEventHandle _event;
@@ -141,13 +140,6 @@ Expression extractExpression(EmoStateHandle state) {
 }
 
 int main() {
-
-    QDeclarativeView view;
-    view.setSource(QUrl::fromLocalFile("textpad.qml"));
-    view.show();
-    QObject *object = view.rootObject();
-    object->setProperty("width", 500);
-
 	EmoEngine engine;
 
 	while(1) {
