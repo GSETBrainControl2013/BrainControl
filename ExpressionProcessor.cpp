@@ -1,6 +1,6 @@
 #include "ExpressionProcessor.hpp"
 
-const DWORD ExpressionProcessor::DECAY_TIME = 0.5*1000;
+const DWORD ExpressionProcessor::DECAY_TIME = 0.25*1000;
 
 void ExpressionProcessor::_readNod() {
     _nod.read();
@@ -72,6 +72,10 @@ void ExpressionProcessor::process(EmoStateHandle state) {
             if(i->second.lowerFace.event == e.lowerFace.event) {
                 e.lowerFace.event = Expression::NEUTRAL;
                 e.lowerFace.power = 0;
+            }
+            if(i->second.thought.event == e.thought.event) {
+                e.thought.event = Expression::NEUTRAL;
+                e.thought.power = 0;
             }
         }
     }

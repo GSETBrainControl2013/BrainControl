@@ -38,6 +38,8 @@
 		</Compiler>
 		<Unit filename="EmoEngine.cpp" />
 		<Unit filename="EmoEngine.hpp" />
+		<Unit filename="Exp2Morse.cpp" />
+		<Unit filename="Exp2Morse.hpp" />
 		<Unit filename="Expression.cpp" />
 		<Unit filename="Expression.hpp" />
 		<Unit filename="ExpressionProcessor.cpp" />

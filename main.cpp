@@ -5,6 +5,7 @@
 #include "Expression.hpp"
 #include "ExpressionProcessor.hpp"
 #include "NodDetector.hpp"
+#include "Exp2Morse.hpp"
 
 int main() {
 	EmoEngine engine;
@@ -17,22 +18,9 @@ int main() {
 
         Expression e;
         while(processor.getExpression(e)) {
-            std::cout << "Processed: " << e << std::endl;
+            std::cout << exp2Morse(e);
+            //std::cout << e << std::endl;
         }
-#if 0
-        int x,y;
-        nod.getNod(x,y);
-        if(x > 0) {
-            std::cout << "Shake right" << std::endl;
-        } else if(x < 0) {
-            std::cout << "Shake left" << std::endl;
-        }
-        if(y > 0) {
-            std::cout << "Nod up" << std::endl;
-        } else if(y < 0) {
-            std::cout << "Nod down" << std::endl;
-        }
-#endif
         std::cout.flush();
 		Sleep(1);
 	}

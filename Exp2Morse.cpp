@@ -1,28 +1,17 @@
-#include <iostream>
-using namespace std;
+#include "Exp2Morse.hpp"
 
-void translateExp(Expression inputExp);
-string resultString;
-
-int main(){
-    Expression inputExp;
-    cin >> inputExp;
-    translateExp(inputExp);
-    cout << resultString;
-    return 0;
-}
-
-void translateExp(Expression inputExp){
-    if (inputExp == Expression::LSMIRK){
-        resultString += "-";
+std::string exp2Morse(Expression inputExp) {
+    if (inputExp.event == Expression::LSMIRK) {
+        return "-";
     }
-    else if (inputExp == Expression::RSMIRK){
-        resultString += ".";
+    if (inputExp.event == Expression::RSMIRK) {
+        return ".";
     }
-    else if (inputExp == Expression::FURROW){
-        resultString += " ";
+    if (inputExp.event == Expression::EYEBROW) {
+        return " ";
     }
-    else if (inputExp == Expression::SHAKE_RIGHT) {
-        resultString += "/";
+    if (inputExp.event == Expression::SHAKE_RIGHT) {
+        return "/";
     }
+    return "";
 }
