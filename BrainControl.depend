@@ -16,11 +16,64 @@
 
 1266463222 c:\program files (x86)\emotiv development kit_v1.0.0.3-premium\doc\examples\include\edkerrorcode.h
 
-1373245141 source:c:\users\navin\gset\brain control\braincontrol\emoeventgetter.cpp
+1373311015 source:c:\users\joe\dropbox\braincontrol\emoeventgetter.cpp
 	"EmoStateDLL.h"
+	"edk.h"
+	<iostream>
+	"EmoEngine.hpp"
+	"Expression.hpp"
+	"ExpressionProcessor.hpp"
+
+1373401388 c:\users\joe\dropbox\braincontrol\emoengine.hpp
+	"edk.h"
+	<stdexcept>
+	<queue>
+
+1373416971 c:\users\joe\dropbox\braincontrol\expression.hpp
 	"edk.h"
 	<windows.h>
 	<iostream>
+
+1373416483 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
+	"Expression.hpp"
+	"EmoEngine.hpp"
+	"NodDetector.hpp"
+
+1373418452 source:c:\users\joe\dropbox\braincontrol\expression.cpp
+	"Expression.hpp"
 	<sstream>
-	<stdexcept>
+
+1373401388 source:c:\users\joe\dropbox\braincontrol\emoengine.cpp
+	"EmoEngine.hpp"
+
+1373570284 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
+	"ExpressionProcessor.hpp"
+
+1373420682 source:c:\users\joe\dropbox\braincontrol\main.cpp
+	"EmoStateDLL.h"
+	"edk.h"
+	<iostream>
+	"EmoEngine.hpp"
+	"Expression.hpp"
+	"ExpressionProcessor.hpp"
+	"NodDetector.hpp"
+	"Exp2Morse.hpp"
+
+1373401388 c:\users\joe\dropbox\braincontrol\noddetector.hpp
+	<windows.h>
+	<list>
+
+1373401388 source:c:\users\joe\dropbox\braincontrol\noddetector.cpp
+	"NodDetector.hpp"
+	<limits>
+	<cstdlib>
+	"edk.h"
+	<iostream>
+
+1373420139 c:\users\joe\dropbox\braincontrol\exp2morse.hpp
+	<string>
+	"Expression.hpp"
+
+1373420249 source:c:\users\joe\dropbox\braincontrol\exp2morse.cpp
+	"Exp2Morse.hpp"
 
