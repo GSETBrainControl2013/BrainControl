@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1373593040 source:c:\users\joe\dropbox\braincontrol\brainconsole\main.cpp
+	"MorseTranslator.hpp"
+	<iostream>
+
+1373593543 c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.hpp
+	<string>
+
+1373593512 source:c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.cpp
+	"MorseTranslator.hpp"
+	<map>
+	<iostream>
+
