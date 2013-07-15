@@ -13,5 +13,8 @@ std::string exp2Morse(Expression inputExp) {
     if (inputExp.event == Expression::SHAKE_RIGHT) {
         return "/";
     }
+    if (inputExp.event == Expression::SHAKE_LEFT) {
+        return "<";
+    }
     return "";
 }
