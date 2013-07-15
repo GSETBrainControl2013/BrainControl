@@ -72,8 +72,12 @@ void MorseTranslator::add(std::string morse) {
     }
     _morseLetter += morse;
     std::string currLetter = "";
+    int bspCount = 0;
     for(size_t i=0;i<_morseLetter.size();++i) {
         char c = _morseLetter[i];
+        if(c == '>') {
+            c = '/';
+        }
         if(c == ' ' || c == '/') {
             std::map<std::string,
                      std::string>::iterator character = morseToTxt.find(currLetter);
@@ -88,8 +92,14 @@ void MorseTranslator::add(std::string morse) {
         if(c == '.' || c == '-') {
             currLetter += c;
         }
+        if(c == '<') {
+            ++bspCount;
+        }
     }
     _morseLetter = currLetter;
+    for(int i=0;i<bspCount;++i) {
+        backspace();
+    }
 }
 
 void MorseTranslator::clear() {
@@ -97,7 +107,9 @@ void MorseTranslator::clear() {
 }
 
 void MorseTranslator::backspace() {
-    if(!_text.empty()) {
+    if(!_morseLetter.empty()) {
+        _morseLetter = _morseLetter.substr(0,_morseLetter.size()-1);
+    } else if(!_text.empty()) {
         _text = _text.substr(0,_text.size()-1);
     }
 }

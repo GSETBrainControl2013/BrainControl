@@ -1,14 +1,15 @@
 # depslib dependency file v1.0
-1373655123 source:c:\users\joe\dropbox\braincontrol\brainconsole\main.cpp
+1373918892 source:c:\users\joe\dropbox\braincontrol\brainconsole\main.cpp
 	"MorseTranslator.hpp"
 	"SDL/SDL.h"
+	"SDL/SDL_ttf.h"
 	<iostream>
 	<stdexcept>
 
-1373593543 c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.hpp
+1373917672 c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.hpp
 	<string>
 
-1373593727 source:c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.cpp
+1373919027 source:c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.cpp
 	"MorseTranslator.hpp"
 	<map>
 	<iostream>
@@ -200,6 +201,11 @@
 
 1325742239 c:\users\joe\downloads\sdl-1.2.15\include\sdl\sdl_version.h
 	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1373573510 c:\users\joe\downloads\sdl-1.2.15\include\sdl\sdl_ttf.h
+	"SDL.h"
 	"begin_code.h"
 	"close_code.h"
 
