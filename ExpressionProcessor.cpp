@@ -1,6 +1,8 @@
 #include "ExpressionProcessor.hpp"
 
 const DWORD ExpressionProcessor::DECAY_TIME = 0.25*1000;
+const float ExpressionProcessor::MIN_UPPER_PWR = 0.30,
+            ExpressionProcessor::MIN_LOWER_PWR = 0.20;
 
 void ExpressionProcessor::_readNod() {
     _nod.read();
@@ -59,6 +61,14 @@ void ExpressionProcessor::process(EmoStateHandle state) {
     _Expression toAdd = e;
     if(!_prevExpressions.empty()) {
         e.lowerFace.eyeState &= ~(_prevExpressions.end()-1)->second.lowerFace.eyeState;
+    }
+    if(e.upperFace.power < MIN_UPPER_PWR) {
+        e.upperFace.event = Expression::NEUTRAL;
+        e.upperFace.power = 0;
+    }
+    if(e.lowerFace.power < MIN_LOWER_PWR) {
+        e.lowerFace.event = Expression::NEUTRAL;
+        e.lowerFace.power = 0;
     }
     for(std::vector<std::pair<DWORD,_Expression> >::iterator i=_prevExpressions.begin();
          i != _prevExpressions.end();++i) {
