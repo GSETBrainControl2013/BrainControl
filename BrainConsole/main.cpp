@@ -129,81 +129,86 @@ int main(int argc,char* argv[]) {
     SDL_WM_SetCaption("SDL Test",NULL);
     std::string txt = "";
 
+    Uint32 prevFrameBegin = 0;
     bool running = true;
     while(running) {
         Uint32 frameBegin = SDL_GetTicks();
-        SDL_Event e;
-        while(SDL_PollEvent(&e)) {
-            switch(e.type) {
-            case SDL_QUIT:
-                running = false;
-                break;
-            case SDL_VIDEORESIZE:
-                screen.screen = SDL_SetVideoMode(e.resize.w,e.resize.h, 32, SDL_SWSURFACE | SDL_RESIZABLE );
-                break;
-            case SDL_KEYDOWN: {
-                    std::string s;
-                    std::cout << s << std::endl;
-                    std::cout.flush();
-                    s += (char)e.key.keysym.unicode;
-                    morse.add(s);
+        if(frameBegin-prevFrameBegin >= MS_PER_FRAME) {
+            prevFrameBegin = frameBegin;
+            SDL_Event e;
+            while(SDL_PollEvent(&e)) {
+                switch(e.type) {
+                case SDL_QUIT:
+                    running = false;
+                    break;
+                case SDL_VIDEORESIZE:
+                    screen.screen = SDL_SetVideoMode(e.resize.w,e.resize.h, 32, SDL_SWSURFACE | SDL_RESIZABLE );
+                    break;
+                case SDL_KEYDOWN: {
+                        std::string s;
+                        std::cout << s << std::endl;
+                        std::cout.flush();
+                        s += (char)e.key.keysym.unicode;
+                        morse.add(s);
+                    }
+                    break;
+                default:
+                    break;
                 }
-                break;
-            default:
-                break;
             }
-        }
 
-        SDL_FillRect(screen.screen,NULL,SDL_MapRGB(screen.screen->format,255,255,255));
+            SDL_FillRect(screen.screen,NULL,SDL_MapRGB(screen.screen->format,255,255,255));
 
-        std::cout << morse.text() << "|" << morse.morseLetter() << std::endl;
+            std::cout << morse.text() << "|" << morse.morseLetter() << std::endl;
 
-        int x,y;
-        drawTextLines(screen.screen,font.font,0,0,morse.text(),txtColor,&x,&y);
-        std::string morseTxt = morse.morseLetter();
-        if(morseTxt.empty()) {
-            morseTxt = "_";
-        }
-        drawTextLines(screen.screen,font.font,x,y,morseTxt,morseColor,&x,&y);
-
-        std::vector<std::pair<std::string,std::string> > suggestions = morse.suggestions();
-        std::vector<std::string> suggestionLines;
-        size_t lineLength = 0;
-        for(size_t i=0;i<suggestions.size() && i<10;++i) {
-            size_t length = suggestions[i].first.length() + suggestions[i].second.length()+1;
-            if(length > lineLength) {
-                lineLength = length;
+            int x,y;
+            drawTextLines(screen.screen,font.font,0,0,morse.text(),txtColor,&x,&y);
+            std::string morseTxt = morse.morseLetter();
+            if(morseTxt.empty()) {
+                morseTxt = "_";
             }
-        }
-        for(size_t i=0;i<suggestions.size() && i<10;++i) {
-            size_t length = suggestions[i].first.length() + suggestions[i].second.length()+1;
-            std::string pad = "";
-            for(int i=length;i<lineLength;++i) {
-                pad += " ";
-            }
-            suggestionLines.push_back(suggestions[i].first+ " " + pad + suggestions[i].second);
-        }
-        SDL_Surface* morsePrompt = buildWindow(font.font,suggestionLines,txtColor,bgColor);
-        if(morsePrompt) {
-            if(x+morsePrompt->w >= screen.screen->w) {
-                int height;
-                TTF_SizeText(font.font,morseTxt.c_str(),NULL,&height);
-                y += height;
-                x = 0;
-            }
-            SDL_Rect windowLoc = { x,y,0,0 };
-            SDL_BlitSurface(morsePrompt,NULL,screen.screen,&windowLoc);
-            SDL_FreeSurface(morsePrompt);
-        }
+            drawTextLines(screen.screen,font.font,x,y,morseTxt,morseColor,&x,&y);
 
-        SDL_Flip(screen.screen);
-        Uint32 frameEnd = SDL_GetTicks();
-        Uint32 frameTime = frameEnd-frameBegin;
-        //std::cout << frameTime << "ms/frame" << std::endl;
-        //std::cout.flush();
-        if(frameTime < MS_PER_FRAME) {
-            SDL_Delay(MS_PER_FRAME-(SDL_GetTicks()-frameBegin));
+            std::vector<std::pair<std::string,std::string> > suggestions = morse.suggestions();
+            std::vector<std::string> suggestionLines;
+            size_t lineLength = 0;
+            for(size_t i=0;i<suggestions.size() && i<10;++i) {
+                size_t length = suggestions[i].first.length() + suggestions[i].second.length()+1;
+                if(length > lineLength) {
+                    lineLength = length;
+                }
+            }
+            for(size_t i=0;i<suggestions.size() && i<10;++i) {
+                size_t length = suggestions[i].first.length() + suggestions[i].second.length()+1;
+                std::string pad = "";
+                for(int i=length;i<lineLength;++i) {
+                    pad += " ";
+                }
+                suggestionLines.push_back(suggestions[i].first+ " " + pad + suggestions[i].second);
+            }
+            SDL_Surface* morsePrompt = buildWindow(font.font,suggestionLines,txtColor,bgColor);
+            if(morsePrompt) {
+                if(x+morsePrompt->w >= screen.screen->w) {
+                    int height;
+                    TTF_SizeText(font.font,morseTxt.c_str(),NULL,&height);
+                    y += height;
+                    x = 0;
+                }
+                SDL_Rect windowLoc = { x,y,0,0 };
+                SDL_BlitSurface(morsePrompt,NULL,screen.screen,&windowLoc);
+                SDL_FreeSurface(morsePrompt);
+            }
+
+            SDL_Flip(screen.screen);
+            //Uint32 frameEnd = SDL_GetTicks();
+            //Uint32 frameTime = frameEnd-frameBegin;
+            //std::cout << frameTime << "ms/frame" << std::endl;
+            //std::cout.flush();
+            //if(frameTime < MS_PER_FRAME) {
+            //    SDL_Delay(MS_PER_FRAME-(SDL_GetTicks()-frameBegin));
+            //}
         }
+        SDL_Delay(1);
     }
     return 0;
 }

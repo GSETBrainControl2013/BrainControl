@@ -10,6 +10,8 @@ class ExpressionProcessor {
         Expression upperFace,lowerFace,thought;
     };
     static const DWORD DECAY_TIME;
+    static const float MIN_UPPER_PWR,
+                       MIN_LOWER_PWR;
     std::queue<Expression> _processed;
     std::vector<std::pair<DWORD,_Expression> > _prevExpressions;
     NodDetector _nod;

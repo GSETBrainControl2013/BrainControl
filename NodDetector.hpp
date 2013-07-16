@@ -7,7 +7,7 @@
 class NodDetector {
     static const DWORD WINDOW_DURATION = 1*1000;
     static const int MAX_BASELINE  = 3,
-                     MIN_INTENSITY = 100;
+                     MIN_INTENSITY = 130;
 
     struct _GyroReading {
         int x,y;
