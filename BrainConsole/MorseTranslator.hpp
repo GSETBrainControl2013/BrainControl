@@ -11,6 +11,8 @@ class MorseTranslator {
     std::string _morseLetter;
     std::vector<std::pair<std::string,std::string> > _suggestions;
 public:
+    MorseTranslator();
+
     void add(std::string morse);
     const std::string& text() const {
         return _text;
