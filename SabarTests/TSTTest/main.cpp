@@ -156,7 +156,8 @@ void ternarySearchTreeNeighborTest() {
     const char * fileName = DIC_FILE_NAME;
     TernarySearchTree<int> tst;
 	Vector< TstItem<int> > itemVector;
-	Vector<int> corrections;
+	Vector<int> correctionIds;
+	Vector<string> corrections;
 
 	int i = 0;
 
@@ -184,12 +185,24 @@ void ternarySearchTreeNeighborTest() {
 
         while ((input += getchar()) != "Q") {
 
-            if (input != "C") {
-                corrections = tst.nearSearch(input.c_str(), 2);
-                cout << corrections;
+            if (input == "C") {
+                input = getchar();
             }
             else {
-                input = getchar();
+                if (input.length() > 5) {
+                    correctionIds = tst.prefixSearch(input.c_str());
+                }
+                else {
+                    correctionIds = tst.prefixSearch(input.c_str());
+                }
+                for (unsigned j = 0; j < correctionIds.count();j++) {
+                    int tmp = correctionIds.get(j);
+                    corrections.add(tst.getKey(tmp));
+                }
+                cout << corrections;
+
+                correctionIds.clear();
+                corrections.clear();
             }
         }
 
