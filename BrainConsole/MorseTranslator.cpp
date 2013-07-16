@@ -61,6 +61,16 @@ std::string _morse[_MORSE_CHARS][2] = {
     { "@",".--.-." }
 };
 
+void MorseTranslator::morseSuggestion(std::string start,std::vector<std::pair<std::string,std::string> >& out) {
+    out.clear();
+    out.reserve(_MORSE_CHARS);
+    for(size_t i=0;i<_MORSE_CHARS;++i) {
+        if(_morse[i][1].compare(0, start.length(), start) == 0) { // begins with
+            out.push_back(std::make_pair(_morse[i][1],_morse[i][0]));
+        }
+    }
+}
+
 std::map<std::string,std::string> morseToTxt;
 
 void MorseTranslator::add(std::string morse) {
@@ -100,6 +110,7 @@ void MorseTranslator::add(std::string morse) {
     for(int i=0;i<bspCount;++i) {
         backspace();
     }
+    morseSuggestion(_morseLetter,_suggestions);
 }
 
 void MorseTranslator::clear() {
