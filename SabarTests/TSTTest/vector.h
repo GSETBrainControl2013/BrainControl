@@ -30,6 +30,7 @@ WebSite: http://www.cs.dal.ca/~zyu
 
 #include <stdio.h>
 #include <assert.h>
+#include <cstdlib>
 
 class ArrayIndexOutOfBoundsException { };
 
@@ -48,7 +49,7 @@ private:
 	/**
 	* static callback function for sorting, the objects should be sorted in ascending order, from lowest value to highest value.
 	*/
-	static int compareObjectsAsc( const void* a, const void* b ) 
+	static int compareObjectsAsc( const void* a, const void* b )
 	{
 		Object * x = (Object*)a;
 		Object * y = (Object*)b;
@@ -62,7 +63,7 @@ private:
 	/**
 	* static callback function for sorting, the objects should be sorted in descending order, from highest value to lowest value.
 	*/
-	static int compareObjectsDesc( const void* a, const void* b ) 
+	static int compareObjectsDesc( const void* a, const void* b )
 	{
 		Object * x = (Object*)a;
 		Object * y = (Object*)b;
@@ -81,7 +82,7 @@ public:
 	* input: size of vector to be constructed. if not specified, default to 0
 	*/
 	explicit vector( unsigned newMaxSize = 0 ) : currentSize( 0 ), maxSize( newMaxSize )
-	{ 
+	{
 		objects = maxSize > 0 ? new Object[ maxSize ] : 0;
 	}
 
@@ -97,16 +98,16 @@ public:
 	* vector copy
 	*/
 	vector( const vector & v ) : objects( 0 )
-	{ 
-		operator=( v ); 
+	{
+		operator=( v );
 	}
 
 	/**
 	* returns the number of items in the vector
 	*/
 	size_t count( ) const
-	{ 
-		return currentSize; 
+	{
+		return currentSize;
 	}
 
 	/**
@@ -139,7 +140,7 @@ public:
 
 	/**
 	* Removes a range of elements from the vector.
-	* 
+	*
 	* @param index - The zero-based starting index of the range of elements to remove.
 	* @param count - The number of elements to remove.
 	*/
@@ -147,7 +148,7 @@ public:
 
 	/**
 	* Removes the first occurrence of a specific object from the vector.
-	* This method performs a linear search; therefore, the average execution time is 
+	* This method performs a linear search; therefore, the average execution time is
 	* proportional to Count. That is, this method is an O(n) operation, where n is Count.
 	*/
 	void remove ( const Object &val );
@@ -167,7 +168,7 @@ public:
 
 	/**
 	* operator[] which get the index-th element in the vector
-	* 
+	*
 	* @param index - element index
 	* @return the index-th element
 	*/
@@ -194,13 +195,13 @@ public:
 	}
 
 	/**
-	* Replaces the element at the specified position 
+	* Replaces the element at the specified position
 	* in this Vector with the specified element.
-	* 
+	*
 	* @param index - index of the vector element  that will be replaced
 	* @param element - the element that will replace existing one on the vector
 	* @return the element previously at the specified position.
-	* 
+	*
 	*/
 	Object set( unsigned index, const Object & element );
 
@@ -208,9 +209,9 @@ public:
 	* Searches for the first occurence of the given argument, beginning the search at index, and testing for equality using the equals method.
 	*
 	* @param val - the object to be searched
-	* @return the index of the first occurrence of the object argument 
+	* @return the index of the first occurrence of the object argument
 	*         in this vector
-	*         returns -1 if the object is not found. 
+	*         returns -1 if the object is not found.
 	*         (Returns -1 if index >= the current size of this Vector.)
 	*/
 	int indexOf( Object val );
@@ -220,35 +221,35 @@ public:
 	*
 	* @param val - the object to be searched
 	* @param index - the non-negative index to start searching from.
-	* @return the index of the first occurrence of the object argument 
-	*         in this vector at position index or later in the vector, 
-	*         that is, the smallest value k such that 
-	*         elem.equals(elementData[k]) && (k >= index) is true; 
-	*         returns -1 if the object is not found. 
+	* @return the index of the first occurrence of the object argument
+	*         in this vector at position index or later in the vector,
+	*         that is, the smallest value k such that
+	*         elem.equals(elementData[k]) && (k >= index) is true;
+	*         returns -1 if the object is not found.
 	*         (Returns -1 if index >= the current size of this Vector.)
 	*/
 	int indexOf( Object val, unsigned index );
 
 	/**
 	* Returns the index of the last occurrence of the specified object in this vector.
-	* 
+	*
 	* @param val - the desired component.
-	* @return the index of the last occurrence of the specified object 
-	*         in this vector, that is, the largest value k such that 
+	* @return the index of the last occurrence of the specified object
+	*         in this vector, that is, the largest value k such that
 	*         elem.equals(elementData[k]) is true; returns -1 if the object is not found.
 	*/
 	int lastIndexOf( const Object & val );
 
 	/**
-	* Searches backwards for the specified object, 
+	* Searches backwards for the specified object,
 	* starting from the specified index, and returns an index to it.
-	* 
+	*
 	* @param val - the desired component.
 	* @param index - the index to start searching from.
-	* @return	the index of the last occurrence of the specified 
-	*			object in this vector at position less than or equal 
-	*          to index in the vector, that is, the largest value k 
-	*          such that elem.equals(elementData[k]) && (k <= index) is true; 
+	* @return	the index of the last occurrence of the specified
+	*			object in this vector at position less than or equal
+	*          to index in the vector, that is, the largest value k
+	*          such that elem.equals(elementData[k]) && (k <= index) is true;
 	*          -1 if the object is not found. (Returns -1 if index is negative.)
 	*/
 	int lastIndexOf( const Object & val, unsigned index );
@@ -263,13 +264,13 @@ public:
 	typedef int (*CompareFunction)( const void *itemAddr1, const void *itemAddr);
 
 	/**
-	* This method uses uses the QuickSort algorithm. 
-	* This is an O(n ^2) operation, where n is the number of elements to sort, 
+	* This method uses uses the QuickSort algorithm.
+	* This is an O(n ^2) operation, where n is the number of elements to sort,
 	* with an average of theta(n log n).
 	* sortAsc will sort objects in ascending order
 	* sortDes will sort objects in descending order
 	*/
-	
+
 	/*enum { SORT_ASC, SORT_DESC };
 	void sort() { sort( SORT_ASC); }
 	void sort ( int sortOrder )
@@ -279,13 +280,13 @@ public:
 	void sortAsc() { sort( SORT_ASC ); }
 	void sortDesc() { sort( SORT_DESC ); }
 	*/
-	
+
 	/**
 	 * sort items in the vector by given compare function
 	 * if compare function is not specefied, default to Vecotr::compareObjectsAsc
 	 */
-	void sort( CompareFunction compareFunction = compareObjectsAsc ) 
-	{	
+	void sort( CompareFunction compareFunction = compareObjectsAsc )
+	{
 		qsort( objects, currentSize, sizeof(Object), compareFunction );
 	}
 
@@ -296,9 +297,9 @@ public:
 
 	/**
 	* Reverses the order of the elements in the specified range.
-	* 
+	*
 	* @param index - The zero-based starting index of the range to reverse.
-	* @param count - The number of elements in the range to reverse. 
+	* @param count - The number of elements in the range to reverse.
 	*/
 	void reverse( unsigned index, unsigned count );
 
@@ -312,6 +313,13 @@ public:
 	* If newSize less than current array size, vector array will not be changed.
 	*/
 	void resize( unsigned newSize );
+
+    /**
+    * return union of two vectors
+    * sort both and traverse to find duplicates
+    */
+    Vector<Object> join (Vector<Object> y);
+
 
 };
 
@@ -333,7 +341,7 @@ const vector<Object> & vector<Object>::operator=( const vector<Object> & v )
 		for( unsigned k = 0; k < currentSize; k++ )
 		{
 			objects[ k ] = v.objects[ k ];
-		}	
+		}
 	}
 	return *this;
 }
@@ -368,7 +376,7 @@ void Vector<Object>::insert( const Object &val, size_t pos )
 	//	throw ArrayIndexOutOfBoundsException( );
 	assert ( pos >= 0 && pos <= currentSize );
 
-	if ( currentSize == maxSize ) 
+	if ( currentSize == maxSize )
 	{
 		maxSize = maxSize != 0 ? 2 * maxSize : 1;
 		/*if ( maxSize < GROW_THRESHOLD )
@@ -379,15 +387,15 @@ void Vector<Object>::insert( const Object &val, size_t pos )
 			maxSize = 1;
 		*/
 		Object *newObjects = new Object[maxSize];
-		
+
 		for ( unsigned i = 0; i < currentSize; i++ )
 			newObjects[i] = objects[i];
-		
+
 		if ( originalMaxSize>0 )
 		{
 			delete[] objects;
 		}
-		
+
 		objects = newObjects;
 
 	}
@@ -506,7 +514,7 @@ int vector<Object>::indexOf( Object val, unsigned index )
 		{
 			ret = ( int ) i;
 			break;
-		}	
+		}
 	}
 	return ret;
 }
@@ -534,7 +542,7 @@ int vector<Object>::lastIndexOf( const Object & val, unsigned index )
 		{
 			ret = ( int ) i;
 			break;
-		}	
+		}
 	}
 	return ret;
 }
@@ -568,6 +576,30 @@ void vector<Object>::reverse( unsigned index, unsigned count )
 	}
 }
 
+template <class Object>
+Vector<Object> vector<Object>::join(Vector<Object> y) {
+    unsigned int i = 0;
+    unsigned int j = 0;
+
+    Vector<Object> x = *this;
+    Vector<Object> joint;
+
+    x.sort();
+    y.sort();
+
+    while (i < x.count() && j < y.count()) {
+        if (x[i] == y[j]) {
+            joint.add(x[i]);
+            i++;
+            j++;
+        }
+        else if (x[i] > y[j]) j++;
+        else i++;
+    }
+
+    return joint;
+
+}
 
 #endif
 

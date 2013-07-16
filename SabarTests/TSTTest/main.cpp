@@ -32,8 +32,10 @@ WebSite: http://www.cs.dal.ca/~zyu
 
 #include "ternarySearchTree.h"
 #include <iostream>
+#include <fstream>
 #include "vector.h"
 #include <time.h>
+#include <conio.h>
 
 #define MAX_LINE_LEN			1024
 #define DIC_FILE_NAME			"dic.txt"
@@ -141,7 +143,7 @@ template<class T>
 std::ostream& operator<<(std::ostream& os,const Vector<T>& v) {
     os << "Vector{";
     bool first = true;
-    for(int i=0;i<v.count();++i) {
+    for(unsigned int i=0;i<v.count();++i) {
         if(!first) {
             os << ",";
         }
@@ -152,14 +154,41 @@ std::ostream& operator<<(std::ostream& os,const Vector<T>& v) {
     return os;
 }
 
+void updateUsage(TernarySearchTree<int> tst, string input) {
+    int *value = tst.getValue(input.c_str());
+
+    if (value != NULL) {
+        tst.add(input.c_str(), *value + 1);
+    }
+    else {
+        //optionally add key to the tree with a 0 value
+        //tst.add(input.c_str(), 0);
+    }
+}
+
+void writeTreeToFile(TernarySearchTree<int> tst, bool reset) {
+    ofstream file ("dictest.txt");
+
+    TstItem<int> *outputItem;
+
+    for (int i = 0; i < tst.count(); i++) {
+        outputItem = tst.getItem(i);
+        file << outputItem->key;
+        file << " ";
+        if (reset) file << "0";
+        else file << outputItem->value;
+    }
+
+    file.close();
+
+}
+
 void ternarySearchTreeNeighborTest() {
     const char * fileName = DIC_FILE_NAME;
     TernarySearchTree<int> tst;
 	Vector< TstItem<int> > itemVector;
 	Vector<int> correctionIds;
 	Vector<string> corrections;
-
-	int i = 0;
 
 	if ( fileName ) {
 		FILE * fp = fopen( fileName,"r" );
@@ -170,10 +199,8 @@ void ternarySearchTreeNeighborTest() {
 			{
 				string key = s;
 				key.trim("\r").trim("\n");//remove \r or \n
-				int value = i;
-				TstItem<int> item( key, value );
+				TstItem<int> item( key, 0);
 				itemVector.add( item );
-				i++;
 			}
 			fclose( fp );
 		}
@@ -182,30 +209,33 @@ void ternarySearchTreeNeighborTest() {
         itemVector.clear();
 
         string input = "";
+        char c = getchar();
 
-        while ((input += getchar()) != "Q") {
-
-            if (input == "C") {
-                input = getchar();
+        while (c != 'Q') {
+            if (c == 'C') {
+                updateUsage(tst, input);
+                input = "";
             }
             else {
-                if (input.length() > 5) {
-                    correctionIds = tst.prefixSearch(input.c_str());
-                }
-                else {
-                    correctionIds = tst.prefixSearch(input.c_str());
-                }
+                input += c;
+                correctionIds = tst.prefixSearch(input.c_str()).join(tst.nearSearch(input.c_str(), 2));
+
                 for (unsigned j = 0; j < correctionIds.count();j++) {
                     int tmp = correctionIds.get(j);
                     corrections.add(tst.getKey(tmp));
                 }
                 cout << corrections;
-
-                correctionIds.clear();
-                corrections.clear();
             }
-        }
 
+            correctionIds.clear();
+            corrections.clear();
+            c = getchar();
+            if (c == '\n') c = getchar();
+        }
+        updateUsage(tst, input);
+
+
+        writeTreeToFile(tst, false);
 	}
 }
 
