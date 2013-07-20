@@ -92,7 +92,8 @@ void MorseTranslator::morseSuggestion(std::string start,std::vector<std::pair<st
     }
 }
 
-MorseTranslator::MorseTranslator() {
+MorseTranslator::MorseTranslator() : rawLog("morse.txt",std::ios_base::out|std::ios_base::trunc),
+                                     textLog("text.txt",std::ios_base::out|std::ios_base::trunc) {
     add("");
 }
 
@@ -110,6 +111,7 @@ void MorseTranslator::add(std::string morse) {
     int bspCount = 0;
     for(size_t i=0;i<_morseLetter.size();++i) {
         char c = _morseLetter[i];
+        rawLog << c;
         if(c == '>') {
             c = '/';
         }
@@ -121,6 +123,7 @@ void MorseTranslator::add(std::string morse) {
                      std::string>::iterator character = morseToTxt.find(currLetter);
             if(character != morseToTxt.end()) {
                 _text += character->second;
+                textLog << character->second;
             }
             currLetter.clear();
         }
@@ -133,6 +136,7 @@ void MorseTranslator::add(std::string morse) {
         if(c == '<') {
             ++bspCount;
         }
+        morseSuggestion(currLetter,_suggestions);
     }
     _morseLetter = currLetter;
     for(int i=0;i<bspCount;++i) {

@@ -6,9 +6,13 @@
 	<iostream>
 	<stdexcept>
 
+1373940751 >
+
 1373948510 c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.hpp
 	<vector>
 	<string>
+
+1373948510 
 
 1373948510 source:c:\users\joe\dropbox\braincontrol\brainconsole\morsetranslator.cpp
 	"MorseTranslator.hpp"
@@ -35,6 +39,8 @@
 	"SDL_version.h"
 	"begin_code.h"
 	"close_code.h"
+
+1373573510 e.h"
 
 1325742239 c:\users\joe\downloads\sdl-1.2.15\include\sdl\sdl_main.h
 	"SDL_stdinc.h"
@@ -79,10 +85,14 @@
 	"SDL_config_os2.h"
 	"SDL_config_minimal.h"
 
+1326114587 g_minimal.h"
+
 1325742239 c:\users\joe\downloads\sdl-1.2.15\include\sdl\sdl_platform.h
 
 1326114594 c:\users\joe\downloads\sdl-1.2.15\include\sdl\sdl_config_win32.h
 	"SDL_platform.h"
+
+1326114594 orm.h"
 
 1326114600 c:\users\joe\downloads\sdl-1.2.15\include\sdl\begin_code.h
 
@@ -190,6 +200,8 @@
 	"SDL_stdinc.h"
 	"SDL_error.h"
 
+1325742239 .h"
+
 1325742239 c:\users\joe\downloads\sdl-1.2.15\include\sdl\sdl_loadso.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
@@ -211,4 +223,22 @@
 	"SDL.h"
 	"begin_code.h"
 	"close_code.h"
+
+1373948510 source:/home/ginto/Dropbox/BrainControl/BrainConsole/MorseTranslator.cpp
+	"MorseTranslator.hpp"
+	<map>
+	<iostream>
+	<algorithm>
+	<string>
+
+1373948510 /home/ginto/Dropbox/BrainControl/BrainConsole/MorseTranslator.hpp
+	<vector>
+	<string>
+
+1373948653 source:/home/ginto/Dropbox/BrainControl/BrainConsole/main.cpp
+	"MorseTranslator.hpp"
+	"SDL/SDL.h"
+	"SDL/SDL_ttf.h"
+	<iostream>
+	<stdexcept>
 
