@@ -5,7 +5,7 @@ const float ExpressionProcessor::MIN_UPPER_PWR = 0.30,
             ExpressionProcessor::MIN_LOWER_PWR = 0.20;
 
 void ExpressionProcessor::_readNod() {
-    _nod.read();
+    _nod.read(log);
     int x,y;
     _nod.getNod(x,y);
     DWORD currTime = GetTickCount();
@@ -57,6 +57,14 @@ void ExpressionProcessor::process(EmoStateHandle state) {
         e.lowerFace.eyeState |= Expression::LLOOK;
     }
 
+    log << currTime << "," << e.lowerFace.event << "," << e.lowerFace.power << ","
+                           << e.upperFace.event << "," << e.upperFace.power << ","
+                           << e.thought.event   << "," << e.thought.power   << ","
+                           << !!(e.lowerFace.eyeState & Expression::BLINK) << ","
+                           << !!(e.lowerFace.eyeState & Expression::LWINK) << ","
+                           << !!(e.lowerFace.eyeState & Expression::RWINK) << ","
+                           << !!(e.lowerFace.eyeState & Expression::RLOOK) << ","
+                           << !!(e.lowerFace.eyeState & Expression::LLOOK);
     //std::cout << "Processing: " << e << std::endl;
     _Expression toAdd = e;
     if(!_prevExpressions.empty()) {
@@ -123,10 +131,16 @@ void ExpressionProcessor::processEvents(EmoEngine& engine) {
 
         if(eventType == EE_EmoStateUpdated) {
             process(engine.eventState());
+        } else {
+            log << GetTickCount() << ",,,,,,,,,,,";
         }
         _readNod();
+        log << std::endl;
+        std::cout << "Ending line" << std::endl;
     }
     if(!nodRead) {
+        log << GetTickCount() << ",,,,,,,,,,,";
         _readNod();
+        log << std::endl;
     }
 }

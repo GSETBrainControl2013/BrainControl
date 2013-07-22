@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <list>
+#include <iostream>
 
 class NodDetector {
     static const DWORD WINDOW_DURATION = 1*1000;
@@ -19,7 +20,7 @@ class NodDetector {
     void _fixWindow();
 public:
     NodDetector() : _lastXPulse(0),_lastYPulse(0) {}
-    void read();
+    void read(std::ostream& log);
     void getNod(int& x,int& y);
 };
 

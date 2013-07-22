@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 
 class MorseTranslator {
     static void morseSuggestion(std::string start,std::vector<std::pair<std::string,std::string> >& out);
@@ -10,6 +11,8 @@ class MorseTranslator {
     std::string _text;
     std::string _morseLetter;
     std::vector<std::pair<std::string,std::string> > _suggestions;
+
+    std::ofstream rawLog,textLog;
 public:
     MorseTranslator();
 

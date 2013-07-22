@@ -16,5 +16,11 @@ std::string exp2Morse(Expression inputExp) {
     if (inputExp.event == Expression::SHAKE_LEFT) {
         return "<";
     }
+    if (inputExp.event == Expression::NOD_UP) {
+        return "^";
+    }
+    if (inputExp.event == Expression::NOD_DOWN) {
+        return "v";
+    }
     return "";
 }

@@ -141,6 +141,10 @@ int main(int argc,char* argv[]) {
     SDL_WM_SetCaption("T3: Thought To Text",NULL);
     std::string txt = "";
 
+    std::ofstream eventLog("events.csv",std::ios_base::out|std::ios_base::trunc);
+
+    morse.add(".--- --- . ");
+
     Uint32 prevFrameBegin = 0;
     bool running = true;
     while(running) {
@@ -148,6 +152,12 @@ int main(int argc,char* argv[]) {
 
         Expression e;
         while(processor.getExpression(e)) {
+            eventLog << e.time << "," << e.event << "," << e.power << ","
+                     << !!(e.eyeState & Expression::BLINK) << ","
+                     << !!(e.eyeState & Expression::LWINK) << ","
+                     << !!(e.eyeState & Expression::RWINK) << ","
+                     << !!(e.eyeState & Expression::RLOOK) << ","
+                     << !!(e.eyeState & Expression::LLOOK) << std::endl;
             std::string morseText = exp2Morse(e);
             if(!morseText.empty()) {
                 morse.add(morseText);

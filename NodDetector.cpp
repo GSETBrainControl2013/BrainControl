@@ -45,10 +45,11 @@ void NodDetector::_fixWindow() {
     }
 }
 
-void NodDetector::read() {
+void NodDetector::read(std::ostream& log) {
     _GyroReading newReading;
     newReading.time = GetTickCount();
     EE_HeadsetGetGyroDelta(0,&newReading.x,&newReading.y);
+    log << "," << newReading.x << "," << newReading.y;
     if(std::abs(newReading.x) > 1 || std::abs(newReading.y) > 1) {
         /*
         if(!_signalWindow.empty()) {

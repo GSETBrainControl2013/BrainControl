@@ -4,6 +4,7 @@
 #include "Expression.hpp"
 #include "EmoEngine.hpp"
 #include "NodDetector.hpp"
+#include <fstream>
 
 class ExpressionProcessor {
     struct _Expression {
@@ -15,10 +16,13 @@ class ExpressionProcessor {
     std::queue<Expression> _processed;
     std::vector<std::pair<DWORD,_Expression> > _prevExpressions;
     NodDetector _nod;
+    std::ofstream log;
 
     void _readNod();
 public:
-    ExpressionProcessor() {}
+    ExpressionProcessor() : log("raw.csv",std::ios_base::out|std::ios_base::trunc) {
+        log << "Time (ms),Lower,LowerPwr,Upper,UpperPwr,Thought,ThoughtPwr,Blink,LWink,RWink,LLook,RLook,GyroX,GyroY" << std::endl;
+    }
 
     void processEvents(EmoEngine& engine);
     void process(EmoStateHandle state);
