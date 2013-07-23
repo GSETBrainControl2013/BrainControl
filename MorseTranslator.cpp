@@ -76,6 +76,7 @@ void MorseTranslator::morseSuggestion(std::string start,std::vector<std::pair<st
             out.push_back(std::make_pair(_morse[i][1],_morse[i][0]));
         }
     }
+    // Bubble sort, because std::sort doesn't like me.
     bool swapped = true;
     size_t size = out.size();
     for(size_t i=0;i<out.size()&&swapped;++i) {
@@ -93,11 +94,63 @@ void MorseTranslator::morseSuggestion(std::string start,std::vector<std::pair<st
 }
 
 MorseTranslator::MorseTranslator() : rawLog("logs/morse.txt",std::ios_base::out|std::ios_base::trunc),
-                                     textLog("logs/text.txt",std::ios_base::out|std::ios_base::trunc) {
+                                     textLog("logs/text.txt",std::ios_base::out|std::ios_base::trunc),
+                                     _selectedSuggestion(0),_replaceEnd(-1) {
     add("");
 }
 
+void MorseTranslator::_buildWordSuggestions() {
+    _wordSuggestions.clear();
+    _wordSuggestions.push_back(_currWord);
+    _wordSuggestions.push_back("Hi!");
+}
+
 std::map<std::string,std::string> morseToTxt;
+
+void MorseTranslator::_add(char c) {
+    rawLog << c;
+    if(c == '>') {
+        c = '/';
+    }
+    if(c == ' ') {
+        //if(!_suggestions.empty()) {
+            std::string currLetter = _suggestions[0].first;
+            std::map<std::string,
+                     std::string>::iterator character = morseToTxt.find(currLetter);
+            if(character != morseToTxt.end()) {
+                _currWord += character->second;
+                textLog << character->second;
+            }
+        //}
+        _morseLetter.clear();
+    }
+    if(c == '/') {
+        std::string replacement = _wordSuggestions[_selectedSuggestion];
+        _replacedWord = _currWord;
+        _replacedMorse = _morseLetter;
+        _replaceBegin = _text.size();
+        _replaceEnd = _replaceBegin+replacement.length()+1;
+        _text += replacement + " ";
+        _currWord = _morseLetter = "";
+        _selectedSuggestion = 0;
+    }
+    if(c == '.' || c == '-') {
+        _morseLetter += c;
+    }
+    if(c == '<') {
+        backspace();
+    }
+    if(c == '^') {
+        --_selectedSuggestion;
+        _selectedSuggestion %= _wordSuggestions.size();
+    }
+    if(c == 'v') {
+        ++_selectedSuggestion;
+        _selectedSuggestion %= _wordSuggestions.size();
+    }
+    morseSuggestion(_morseLetter,_suggestions);
+    _buildWordSuggestions();
+}
 
 void MorseTranslator::add(std::string morse) {
     if(morseToTxt.empty()) {
@@ -106,43 +159,11 @@ void MorseTranslator::add(std::string morse) {
             morseToTxt[_morse[i][1]] = _morse[i][0];
         }
     }
-    _morseLetter += morse;
-    std::string currLetter = "";
-    int bspCount = 0;
-    for(size_t i=0;i<_morseLetter.size();++i) {
-        char c = _morseLetter[i];
-        rawLog << c;
-        if(c == '>') {
-            c = '/';
-        }
-        if(c == ' ' || c == '/') {
-            if(!currLetter.empty() || c == ' ') {
-                currLetter = _suggestions[0].first;
-            }
-            std::map<std::string,
-                     std::string>::iterator character = morseToTxt.find(currLetter);
-            if(character != morseToTxt.end()) {
-                _text += character->second;
-                textLog << character->second;
-            }
-            currLetter.clear();
-        }
-        if(c == '/') {
-            _text += ' ';
-        }
-        if(c == '.' || c == '-') {
-            currLetter += c;
-        }
-        if(c == '<') {
-            ++bspCount;
-        }
-        morseSuggestion(currLetter,_suggestions);
-    }
-    _morseLetter = currLetter;
-    for(int i=0;i<bspCount;++i) {
-        backspace();
+    for(size_t i=0;i<morse.size();++i) {
+        _add(morse[i]);
     }
     morseSuggestion(_morseLetter,_suggestions);
+    _buildWordSuggestions();
 }
 
 void MorseTranslator::clear() {
@@ -153,6 +174,13 @@ void MorseTranslator::clear() {
 void MorseTranslator::backspace() {
     if(!_morseLetter.empty()) {
         _morseLetter = _morseLetter.substr(0,_morseLetter.size()-1);
+    } else if(!_currWord.empty()) {
+        _currWord = _currWord.substr(0,_currWord.size()-1);
+    } else if(_text.length() == _replaceEnd) {
+        _text.erase(_replaceBegin);
+        _currWord = _replacedWord;
+        _morseLetter = _replacedMorse;
+        _replaceEnd = -1;
     } else if(!_text.empty()) {
         _text = _text.substr(0,_text.size()-1);
     }

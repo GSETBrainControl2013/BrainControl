@@ -98,6 +98,9 @@ SDL_Surface* buildWindow(TTF_Font* font,const std::vector<std::string>& lines,
         totalH += h;
     }
     SDL_Surface* firstLine = TTF_RenderText_Blended(font,lines[0].c_str(),fg);
+    if(!firstLine) {
+        return NULL;
+    }
     SDL_Surface* ret = SDL_CreateRGBSurface(SDL_SWSURFACE, maxW, totalH, firstLine->format->BitsPerPixel,
                                    firstLine->format->Rmask,
                                    firstLine->format->Gmask,
@@ -118,6 +121,10 @@ SDL_Surface* buildWindow(TTF_Font* font,const std::vector<std::string>& lines,
     }
     SDL_FreeSurface(line);
     return ret;
+}
+
+void wordSuggestions(std::vector<std::string>& suggs) {
+    suggs.clear();
 }
 
 int main(int argc,char* argv[]) {
@@ -219,17 +226,17 @@ int main(int argc,char* argv[]) {
 
             SDL_FillRect(screen.screen,NULL,SDL_MapRGB(screen.screen->format,255,255,255));
 
-            std::cout << morse.text() << "|" << morse.morseLetter() << std::endl;
+            std::cout << (morse.text()+morse.currWord()) << "|" << morse.morseLetter() << std::endl;
 
             int x,y;
-            drawTextLines(screen.screen,font.font,0,0,morse.text(),txtColor,&x,&y);
+            drawTextLines(screen.screen,font.font,0,0,(morse.text()+morse.currWord()),txtColor,&x,&y);
             std::string morseTxt = morse.morseLetter();
             if(morseTxt.empty()) {
                 morseTxt = "_";
             }
             drawTextLines(screen.screen,font.font,x,y,morseTxt,morseColor,&x,&y);
 
-            std::vector<std::pair<std::string,std::string> > suggestions = morse.suggestions();
+            std::vector<std::pair<std::string,std::string> > suggestions = morse.morseSuggestions();
             std::vector<std::string> suggestionLines;
             size_t lineLength = 0;
             for(size_t i=0;i<suggestions.size() && i<10;++i) {
@@ -247,7 +254,9 @@ int main(int argc,char* argv[]) {
                 suggestionLines.push_back(suggestions[i].first+ " " + pad + suggestions[i].second);
             }
             SDL_Surface* morsePrompt = buildWindow(font.font,suggestionLines,0,txtColor,bgColor,bgColor);
+            int morsePromptH = 0;
             if(morsePrompt) {
+                morsePromptH = morsePrompt->h;
                 if(x+morsePrompt->w >= screen.screen->w) {
                     int height;
                     TTF_SizeText(font.font,morseTxt.c_str(),NULL,&height);
@@ -255,9 +264,29 @@ int main(int argc,char* argv[]) {
                     x = 0;
                 }
                 SDL_Rect windowLoc = { x,y,0,0 };
+                x += morsePrompt->w;
                 SDL_BlitSurface(morsePrompt,NULL,screen.screen,&windowLoc);
                 SDL_FreeSurface(morsePrompt);
             }
+            const std::vector<std::string>& wordSuggs = morse.wordSuggestions();
+            SDL_Surface* suggPrompt = buildWindow(font.font,wordSuggs,morse.selectionIndex(),txtColor,suggColor,morseColor);
+            if(suggPrompt) {
+                if(x+suggPrompt->w >= screen.screen->w) {
+                    if(morsePromptH) {
+                        y += morsePromptH;
+                    } else {
+                        int height;
+                        TTF_SizeText(font.font,morseTxt.c_str(),NULL,&height);
+                        y += height;
+                    }
+                    x = 0;
+                }
+                SDL_Rect windowLoc = { x,y,0,0 };
+                x += suggPrompt->w;
+                SDL_BlitSurface(suggPrompt,NULL,screen.screen,&windowLoc);
+                SDL_FreeSurface(suggPrompt);
+            }
+
             if(locked) {
                 std::vector<std::string> lines;
                 lines.push_back("Locked. Nod up to unlock");

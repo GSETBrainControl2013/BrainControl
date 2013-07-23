@@ -50,7 +50,7 @@
 1374538118 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
 	"ExpressionProcessor.hpp"
 
-1374542976 source:c:\users\joe\dropbox\braincontrol\main.cpp
+1374589564 source:c:\users\joe\dropbox\braincontrol\main.cpp
 	"EmoStateDLL.h"
 	"edk.h"
 	<iostream>
@@ -84,12 +84,12 @@
 1374542915 source:c:\users\joe\dropbox\braincontrol\exp2morse.cpp
 	"Exp2Morse.hpp"
 
-1374344215 c:\users\joe\dropbox\braincontrol\morsetranslator.hpp
+1374589553 c:\users\joe\dropbox\braincontrol\morsetranslator.hpp
 	<vector>
 	<string>
 	<fstream>
 
-1374538118 source:c:\users\joe\dropbox\braincontrol\morsetranslator.cpp
+1374589619 source:c:\users\joe\dropbox\braincontrol\morsetranslator.cpp
 	"MorseTranslator.hpp"
 	<map>
 	<iostream>

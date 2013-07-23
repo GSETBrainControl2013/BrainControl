@@ -1,34 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="ExpressionProcessor.hpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="MorseTranslator.hpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="333" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="MorseTranslator.cpp" open="1" top="1" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4014" topLine="129" />
-		</Cursor>
-	</File>
-	<File name="MorseTranslator.hpp" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="112" topLine="9" />
+			<Cursor1 position="510" topLine="5" />
 		</Cursor>
 	</File>
 	<File name="NodDetector.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1532" topLine="51" />
+			<Cursor1 position="568" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="NodDetector.hpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="258" topLine="3" />
+			<Cursor1 position="521" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4170" topLine="141" />
+			<Cursor1 position="8934" topLine="245" />
 		</Cursor>
 	</File>
 	<File name="EmoEngine.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -43,7 +33,7 @@
 	</File>
 	<File name="Exp2Morse.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="287" topLine="0" />
+			<Cursor1 position="651" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="Exp2Morse.hpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -58,12 +48,22 @@
 	</File>
 	<File name="Expression.hpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="630" topLine="17" />
+			<Cursor1 position="113" topLine="10" />
 		</Cursor>
 	</File>
 	<File name="ExpressionProcessor.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2280" topLine="56" />
+			<Cursor1 position="411" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="ExpressionProcessor.hpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="599" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="MorseTranslator.cpp" open="1" top="1" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4062" topLine="129" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

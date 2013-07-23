@@ -8,11 +8,17 @@
 class MorseTranslator {
     static void morseSuggestion(std::string start,std::vector<std::pair<std::string,std::string> >& out);
 
-    std::string _text;
-    std::string _morseLetter;
+    std::string _text, _currWord, _morseLetter;
+    int _replaceBegin,_replaceEnd;
+    std::string _replacedWord,_replacedMorse;
     std::vector<std::pair<std::string,std::string> > _suggestions;
+    std::vector<std::string> _wordSuggestions;
+    unsigned _selectedSuggestion;
 
     std::ofstream rawLog,textLog;
+
+    void _buildWordSuggestions();
+    void _add(char c);
 public:
     MorseTranslator();
 
@@ -20,13 +26,22 @@ public:
     const std::string& text() const {
         return _text;
     }
+    const std::string& currWord() const {
+        return _currWord;
+    }
     const std::string& morseLetter() const {
         return _morseLetter;
     }
     void clear();
     void backspace();
-    const std::vector<std::pair<std::string,std::string> >& suggestions() {
+    const std::vector<std::pair<std::string,std::string> >& morseSuggestions() {
         return _suggestions;
+    }
+    const std::vector<std::string>& wordSuggestions() {
+        return _wordSuggestions;
+    }
+    unsigned selectionIndex() {
+        return _selectedSuggestion;
     }
 };
 
