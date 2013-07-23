@@ -141,7 +141,7 @@ int main(int argc,char* argv[]) {
     SDL_WM_SetCaption("T3: Thought To Text",NULL);
     std::string txt = "";
 
-    std::ofstream eventLog("events.csv",std::ios_base::out|std::ios_base::trunc);
+    std::ofstream eventLog("logs/events.csv",std::ios_base::out|std::ios_base::trunc);
 
     morse.add(".--- --- . ");
 

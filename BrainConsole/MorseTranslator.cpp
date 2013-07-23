@@ -133,6 +133,7 @@ void MorseTranslator::add(std::string morse) {
         if(c == '<') {
             ++bspCount;
         }
+        morseSuggestion(currLetter,_suggestions);
     }
     _morseLetter = currLetter;
     for(int i=0;i<bspCount;++i) {

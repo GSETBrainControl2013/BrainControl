@@ -16,10 +16,11 @@ class NodDetector {
     };
     std::list<_GyroReading> _signalWindow;
     DWORD _lastXPulse,_lastYPulse;
+    DWORD _lastLog;
 
     void _fixWindow();
 public:
-    NodDetector() : _lastXPulse(0),_lastYPulse(0) {}
+    NodDetector() : _lastXPulse(0),_lastYPulse(0),_lastLog(0) {}
     void read(std::ostream& log);
     void getNod(int& x,int& y);
 };

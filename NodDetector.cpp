@@ -49,7 +49,16 @@ void NodDetector::read(std::ostream& log) {
     _GyroReading newReading;
     newReading.time = GetTickCount();
     EE_HeadsetGetGyroDelta(0,&newReading.x,&newReading.y);
-    log << "," << newReading.x << "," << newReading.y;
+    if(!_signalWindow.empty()) {
+        _GyroReading prev = _signalWindow.back();
+        if(prev.x != newReading.x || prev.y != newReading.y) {
+            if(prev.time > _lastLog) {
+                log << prev.time << ",,,,,,,,,,,," << prev.x << "," << prev.y << std::endl;
+            }
+            log << newReading.time << ",,,,,,,,,,,," << newReading.x << "," << newReading.y << std::endl;
+            _lastLog = newReading.time;
+        }
+    }
     if(std::abs(newReading.x) > 1 || std::abs(newReading.y) > 1) {
         /*
         if(!_signalWindow.empty()) {

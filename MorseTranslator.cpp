@@ -92,8 +92,8 @@ void MorseTranslator::morseSuggestion(std::string start,std::vector<std::pair<st
     }
 }
 
-MorseTranslator::MorseTranslator() : rawLog("morse.txt",std::ios_base::out|std::ios_base::trunc),
-                                     textLog("text.txt",std::ios_base::out|std::ios_base::trunc) {
+MorseTranslator::MorseTranslator() : rawLog("logs/morse.txt",std::ios_base::out|std::ios_base::trunc),
+                                     textLog("logs/text.txt",std::ios_base::out|std::ios_base::trunc) {
     add("");
 }
 
@@ -147,6 +147,7 @@ void MorseTranslator::add(std::string morse) {
 
 void MorseTranslator::clear() {
     _text.clear();
+    add("");
 }
 
 void MorseTranslator::backspace() {

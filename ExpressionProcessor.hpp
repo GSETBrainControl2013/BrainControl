@@ -20,7 +20,7 @@ class ExpressionProcessor {
 
     void _readNod();
 public:
-    ExpressionProcessor() : log("raw.csv",std::ios_base::out|std::ios_base::trunc) {
+    ExpressionProcessor() : log("logs/raw.csv",std::ios_base::out|std::ios_base::trunc) {
         log << "Time (ms),Lower,LowerPwr,Upper,UpperPwr,Thought,ThoughtPwr,Blink,LWink,RWink,LLook,RLook,GyroX,GyroY" << std::endl;
     }
 

@@ -1,6 +1,6 @@
 #include "ExpressionProcessor.hpp"
 
-const DWORD ExpressionProcessor::DECAY_TIME = 0.25*1000;
+const DWORD ExpressionProcessor::DECAY_TIME = 0.2*1000;
 const float ExpressionProcessor::MIN_UPPER_PWR = 0.30,
             ExpressionProcessor::MIN_LOWER_PWR = 0.20;
 
@@ -134,13 +134,10 @@ void ExpressionProcessor::processEvents(EmoEngine& engine) {
         } else {
             log << GetTickCount() << ",,,,,,,,,,,";
         }
-        _readNod();
         log << std::endl;
-        std::cout << "Ending line" << std::endl;
+        _readNod();
     }
     if(!nodRead) {
-        log << GetTickCount() << ",,,,,,,,,,,";
         _readNod();
-        log << std::endl;
     }
 }

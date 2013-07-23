@@ -126,7 +126,7 @@ int main(int argc,char* argv[]) {
 
     fontHandler font;
     font.font = TTF_OpenFont("brain.ttf",20);
-    SDL_WM_SetCaption("T3: Text To Speech",NULL);
+    SDL_WM_SetCaption("T3: Thought To Text",NULL);
     std::string txt = "";
 
     Uint32 prevFrameBegin = 0;
