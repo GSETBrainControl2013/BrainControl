@@ -11,6 +11,12 @@ inline T sign(T x) {
                     0;
 }
 
+NodDetector::NodDetector() : _lastXPulse(0),_lastYPulse(0),_lastLog(0) {
+    _GyroReading firstReading;
+    firstReading.time = firstReading.x = firstReading.y = 0;
+    _signalWindow.push_back(firstReading);
+}
+
 void NodDetector::_fixWindow() {
     DWORD minTime = GetTickCount()-WINDOW_DURATION;
     _GyroReading prevReading;

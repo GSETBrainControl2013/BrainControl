@@ -20,7 +20,7 @@ class NodDetector {
 
     void _fixWindow();
 public:
-    NodDetector() : _lastXPulse(0),_lastYPulse(0),_lastLog(0) {}
+    NodDetector();
     void read(std::ostream& log);
     void getNod(int& x,int& y);
 };

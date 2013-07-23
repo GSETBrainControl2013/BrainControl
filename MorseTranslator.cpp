@@ -104,13 +104,23 @@ MorseTranslator::~MorseTranslator() {
 }
 
 void MorseTranslator::_buildWordSuggestions() {
-    _wordSuggestions = autoComplete(vars,_currWord,5);
-    _wordSuggestions.push_front(_currWord);
+    if(_currWord.empty()) {
+        _wordSuggestions.clear();
+    }
+    autoComplete(vars,_currWord,5,_wordSuggestions);
+    _wordSuggestions.insert(_wordSuggestions.begin(),_currWord);
+    if(_selectedSuggestion < 0) {
+        _selectedSuggestion = 0;
+    }
+    if(_selectedSuggestion >= _wordSuggestions.size()) {
+        _selectedSuggestion = _wordSuggestions.size()-1;
+    }
 }
 
 std::map<std::string,std::string> morseToTxt;
 
 void MorseTranslator::_add(char c) {
+    std::string oldWord = _currWord;
     rawLog << c;
     if(c == '>') {
         c = '/';
@@ -136,6 +146,12 @@ void MorseTranslator::_add(char c) {
         _text += replacement + " ";
         _currWord = _morseLetter = "";
         _selectedSuggestion = 0;
+        std::map<std::string,int>::iterator usage = vars->daMap.find(replacement);
+        if(usage == vars->daMap.end()) {
+            vars->daMap[replacement] = 1;
+        } else {
+            vars->daMap[replacement]++;
+        }
     }
     if(c == '.' || c == '-') {
         _morseLetter += c;
@@ -152,7 +168,9 @@ void MorseTranslator::_add(char c) {
         _selectedSuggestion %= _wordSuggestions.size();
     }
     morseSuggestion(_morseLetter,_suggestions);
-    _buildWordSuggestions();
+    if(oldWord != _currWord) {
+        _buildWordSuggestions();
+    }
 }
 
 void MorseTranslator::add(std::string morse) {
@@ -162,11 +180,13 @@ void MorseTranslator::add(std::string morse) {
             morseToTxt[_morse[i][1]] = _morse[i][0];
         }
     }
+    if(morse.empty()) {
+        morseSuggestion(_morseLetter,_suggestions);
+        _buildWordSuggestions();
+    }
     for(size_t i=0;i<morse.size();++i) {
         _add(morse[i]);
     }
-    morseSuggestion(_morseLetter,_suggestions);
-    _buildWordSuggestions();
 }
 
 void MorseTranslator::clear() {

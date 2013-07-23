@@ -256,7 +256,6 @@ int main(int argc,char* argv[]) {
             SDL_Surface* morsePrompt = buildWindow(font.font,suggestionLines,0,txtColor,bgColor,bgColor);
             int morsePromptH = 0;
             if(morsePrompt) {
-                morsePromptH = morsePrompt->h;
                 if(x+morsePrompt->w >= screen.screen->w) {
                     int height;
                     TTF_SizeText(font.font,morseTxt.c_str(),NULL,&height);
@@ -272,13 +271,9 @@ int main(int argc,char* argv[]) {
             SDL_Surface* suggPrompt = buildWindow(font.font,wordSuggs,morse.selectionIndex(),txtColor,suggColor,morseColor);
             if(suggPrompt) {
                 if(x+suggPrompt->w >= screen.screen->w) {
-                    if(morsePromptH) {
-                        y += morsePromptH;
-                    } else {
-                        int height;
-                        TTF_SizeText(font.font,morseTxt.c_str(),NULL,&height);
-                        y += height;
-                    }
+                    int height;
+                    TTF_SizeText(font.font,morseTxt.c_str(),NULL,&height);
+                    y += height;
                     x = 0;
                 }
                 SDL_Rect windowLoc = { x,y,0,0 };

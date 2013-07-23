@@ -1,6 +1,6 @@
 #include "ExpressionProcessor.hpp"
 
-const DWORD ExpressionProcessor::DECAY_TIME = 0.2*1000;
+const DWORD ExpressionProcessor::DECAY_TIME = 0.25*1000;
 const float ExpressionProcessor::MIN_UPPER_PWR = 0.30,
             ExpressionProcessor::MIN_LOWER_PWR = 0.20;
 
@@ -115,6 +115,7 @@ bool ExpressionProcessor::getExpression(Expression& e) {
         return false;
     }
     e = _processed.front();
+    std::cout << "Expression: " << e << std::endl;
     _processed.pop();
     return true;
 }
