@@ -34,7 +34,7 @@
 	<windows.h>
 	<iostream>
 
-1374536298 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
+1374538118 c:\users\joe\dropbox\braincontrol\expressionprocessor.hpp
 	"Expression.hpp"
 	"EmoEngine.hpp"
 	"NodDetector.hpp"
@@ -47,10 +47,10 @@
 1373401388 source:c:\users\joe\dropbox\braincontrol\emoengine.cpp
 	"EmoEngine.hpp"
 
-1374521332 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
+1374538118 source:c:\users\joe\dropbox\braincontrol\expressionprocessor.cpp
 	"ExpressionProcessor.hpp"
 
-1374344215 source:c:\users\joe\dropbox\braincontrol\main.cpp
+1374542976 source:c:\users\joe\dropbox\braincontrol\main.cpp
 	"EmoStateDLL.h"
 	"edk.h"
 	<iostream>
@@ -60,18 +60,17 @@
 	"NodDetector.hpp"
 	"Exp2Morse.hpp"
 	"MorseTranslator.hpp"
-	<sstream>
 	"MorseTranslator.hpp"
 	"SDL/SDL.h"
 	"SDL/SDL_ttf.h"
 	<stdexcept>
 
-1374521059 c:\users\joe\dropbox\braincontrol\noddetector.hpp
+1374538118 c:\users\joe\dropbox\braincontrol\noddetector.hpp
 	<windows.h>
 	<list>
 	<iostream>
 
-1374521254 source:c:\users\joe\dropbox\braincontrol\noddetector.cpp
+1374538118 source:c:\users\joe\dropbox\braincontrol\noddetector.cpp
 	"NodDetector.hpp"
 	<limits>
 	<cstdlib>
@@ -82,7 +81,7 @@
 	<string>
 	"Expression.hpp"
 
-1374344215 source:c:\users\joe\dropbox\braincontrol\exp2morse.cpp
+1374542915 source:c:\users\joe\dropbox\braincontrol\exp2morse.cpp
 	"Exp2Morse.hpp"
 
 1374344215 c:\users\joe\dropbox\braincontrol\morsetranslator.hpp
@@ -90,7 +89,7 @@
 	<string>
 	<fstream>
 
-1374344215 source:c:\users\joe\dropbox\braincontrol\morsetranslator.cpp
+1374538118 source:c:\users\joe\dropbox\braincontrol\morsetranslator.cpp
 	"MorseTranslator.hpp"
 	<map>
 	<iostream>

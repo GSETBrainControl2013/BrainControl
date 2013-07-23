@@ -7,11 +7,12 @@
 #include "NodDetector.hpp"
 #include "Exp2Morse.hpp"
 #include "MorseTranslator.hpp"
-#include <sstream>
 #include "MorseTranslator.hpp"
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 #include <stdexcept>
+
+#define DEBUG
 
 const float FPS = 30;
 const Uint32 MS_PER_FRAME = 1000/FPS;
@@ -79,12 +80,13 @@ void drawTextLines(SDL_Surface* surf,TTF_Font* font,int x,int y,std::string s,SD
     }
 }
 
-SDL_Surface* buildWindow(TTF_Font* font,const std::vector<std::string>& lines,SDL_Color fg,SDL_Color bg) {
+SDL_Surface* buildWindow(TTF_Font* font,const std::vector<std::string>& lines,
+                         int selectedLine,SDL_Color fg,SDL_Color bg,SDL_Color highlight) {
     if(lines.empty()) {
         return NULL;
     }
     int maxW = 0,totalH = 0;
-    std::vector<int> yPos;
+    std::vector<int> yPos,height;
     int w,h;
     for(size_t i=0;i<lines.size();++i) {
         TTF_SizeText(font,lines[i].c_str(),&w,&h);
@@ -92,6 +94,7 @@ SDL_Surface* buildWindow(TTF_Font* font,const std::vector<std::string>& lines,SD
             maxW = w;
         }
         yPos.push_back(totalH);
+        height.push_back(h);
         totalH += h;
     }
     SDL_Surface* firstLine = TTF_RenderText_Blended(font,lines[0].c_str(),fg);
@@ -103,10 +106,13 @@ SDL_Surface* buildWindow(TTF_Font* font,const std::vector<std::string>& lines,SD
     SDL_FillRect(ret,NULL,SDL_MapRGB(ret->format,bg.r,bg.g,bg.b));
     SDL_Surface* line = firstLine;
     for(size_t i=0;i<lines.size();++i) {
-        SDL_Rect loc = { 0,yPos[i],0,0 };
+        SDL_Rect loc = { 0,yPos[i],ret->w,height[i] };
         if(i != 0) {
             SDL_FreeSurface(line);
             line = TTF_RenderText_Blended(font,lines[i].c_str(),fg);
+        }
+        if(i == selectedLine) {
+            SDL_FillRect(ret,&loc,SDL_MapRGB(ret->format,highlight.r,highlight.g,highlight.b));
         }
         SDL_BlitSurface(line,NULL,ret,&loc);
     }
@@ -121,7 +127,8 @@ int main(int argc,char* argv[]) {
 
     SDL_Color txtColor   = {   0,  0,  0 },
               morseColor = { 255,  0,  0 },
-              bgColor    = {   0,255,  0 };
+              bgColor    = {   0,255,  0 },
+              suggColor  = {   0,  0,255 };
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         throw std::runtime_error("SDL init failed");
     }
@@ -143,7 +150,11 @@ int main(int argc,char* argv[]) {
 
     std::ofstream eventLog("logs/events.csv",std::ios_base::out|std::ios_base::trunc);
 
-    morse.add(".--- --- . ");
+    bool locked = false;
+
+    //morse.add(".--- --- . ");
+
+    std::string morseToAdd = "";
 
     Uint32 prevFrameBegin = 0;
     bool running = true;
@@ -158,11 +169,7 @@ int main(int argc,char* argv[]) {
                      << !!(e.eyeState & Expression::RWINK) << ","
                      << !!(e.eyeState & Expression::RLOOK) << ","
                      << !!(e.eyeState & Expression::LLOOK) << std::endl;
-            std::string morseText = exp2Morse(e);
-            if(!morseText.empty()) {
-                morse.add(morseText);
-                std::stringstream newTxt;
-            }
+            morseToAdd += exp2Morse(e);
         }
 
         Uint32 frameBegin = SDL_GetTicks();
@@ -185,10 +192,30 @@ int main(int argc,char* argv[]) {
                 //        morse.add(s);
                 //    }
                 //    break;
+#ifdef DEBUG
+                case SDL_KEYDOWN: {
+                        std::string s = "";
+                        s += (char)e.key.keysym.unicode;
+                        morseToAdd += s;
+                    }
+                    break;
+#endif
                 default:
                     break;
                 }
             }
+
+            for(size_t i=0;i<morseToAdd.length();++i) {
+                std::string morseText = morseToAdd.substr(i,1);
+                if(morseText == "@") {
+                    locked = true;
+                } else if(locked && morseText == "^") {
+                    locked = false;
+                } else if(!locked && !morseText.empty()) {
+                    morse.add(morseText);
+                }
+            }
+            morseToAdd.clear();
 
             SDL_FillRect(screen.screen,NULL,SDL_MapRGB(screen.screen->format,255,255,255));
 
@@ -219,7 +246,7 @@ int main(int argc,char* argv[]) {
                 }
                 suggestionLines.push_back(suggestions[i].first+ " " + pad + suggestions[i].second);
             }
-            SDL_Surface* morsePrompt = buildWindow(font.font,suggestionLines,txtColor,bgColor);
+            SDL_Surface* morsePrompt = buildWindow(font.font,suggestionLines,0,txtColor,bgColor,bgColor);
             if(morsePrompt) {
                 if(x+morsePrompt->w >= screen.screen->w) {
                     int height;
@@ -230,6 +257,15 @@ int main(int argc,char* argv[]) {
                 SDL_Rect windowLoc = { x,y,0,0 };
                 SDL_BlitSurface(morsePrompt,NULL,screen.screen,&windowLoc);
                 SDL_FreeSurface(morsePrompt);
+            }
+            if(locked) {
+                std::vector<std::string> lines;
+                lines.push_back("Locked. Nod up to unlock");
+                SDL_Surface* lockDialog = buildWindow(font.font,lines,0,morseColor,suggColor,suggColor);
+                SDL_Rect loc = { (screen.screen->w - lockDialog->w)/2,
+                                 (screen.screen->h - lockDialog->h)/2,0,0 };
+                SDL_BlitSurface(lockDialog,NULL,screen.screen,&loc);
+                SDL_FreeSurface(lockDialog);
             }
 
             SDL_Flip(screen.screen);

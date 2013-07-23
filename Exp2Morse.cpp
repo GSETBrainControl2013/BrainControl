@@ -22,5 +22,8 @@ std::string exp2Morse(Expression inputExp) {
     if (inputExp.event == Expression::NOD_DOWN) {
         return "v";
     }
+    if (inputExp.event == Expression::THOUGHT_LIFT) {
+        return "@";
+    }
     return "";
 }
