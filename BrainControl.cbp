@@ -9,7 +9,7 @@
 			<Target title="Debug">
 				<Option output="bin/Debug/BrainControl" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
@@ -40,6 +40,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="AutoComplete.cpp" />
+		<Unit filename="AutoComplete.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="EmoEngine.cpp" />
 		<Unit filename="EmoEngine.hpp" />
 		<Unit filename="Exp2Morse.cpp" />
@@ -53,6 +57,10 @@
 		<Unit filename="NodDetector.cpp" />
 		<Unit filename="NodDetector.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mystring.h" />
+		<Unit filename="string.cpp" />
+		<Unit filename="ternarySearchTree.h" />
+		<Unit filename="vector.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
