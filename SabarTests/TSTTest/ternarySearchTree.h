@@ -65,6 +65,8 @@ WebSite: http://www.cs.dal.ca/~zyu
 * define tree node structure
 */
 
+namespace suck {
+
 typedef struct TstNode * TstTree;
 
 typedef struct TstNode
@@ -147,6 +149,13 @@ public:
 	* Note: current TST tree will be cleared before build balanced tree.
 	*
 	*/
+
+    void incrementValue( const char * key) {
+        TstItem<int> *item = getItem(key);
+        int value = item->value;
+        value++;
+        item->value = value;
+    }
 
 	void buildBalancedTree( Vector< TstItem<Object> > & itemVector );
 
@@ -240,6 +249,7 @@ public:
 		int index = -1; /* index of the key in keyVector */
 		int diff, sc = *key;
 		TstTree p = root;
+
 
 		while (p)
 		{
@@ -649,8 +659,7 @@ void TernarySearchTree<Object>::partialMatchSearch(TstTree tree, const char *key
 		}
 	}
 	if ( ( *key == 0 ||  *key == '*' ) && tree->splitChar == 0 )
-	{
-		pmVectorPtr->add( tree->index );
+	{		pmVectorPtr->add( tree->index );
 	}
 
 	if (*key == '?' || *key == '*' || *key > tree->splitChar)
@@ -663,6 +672,8 @@ template <class Object>
 void TernarySearchTree<Object>::nearSearch( TstTree tree, const char * key, int distance )
 {
 	if ( !tree || distance < 0 )
+
+
 	{
 		return;
 	}
@@ -715,6 +726,8 @@ void TernarySearchTree<Object>::buildBalancedTreeRecursive( Vector< TstItem<Obje
 	add( itemVector[ start + mid ].key.c_str(), itemVector[ start + mid ].value );
 	buildBalancedTreeRecursive( itemVector, start, start + mid - 1 );
 	buildBalancedTreeRecursive( itemVector, start + mid + 1, end );
+}
+
 }
 
 #endif

@@ -95,14 +95,17 @@ void MorseTranslator::morseSuggestion(std::string start,std::vector<std::pair<st
 
 MorseTranslator::MorseTranslator() : rawLog("logs/morse.txt",std::ios_base::out|std::ios_base::trunc),
                                      textLog("logs/text.txt",std::ios_base::out|std::ios_base::trunc),
-                                     _selectedSuggestion(0),_replaceEnd(-1) {
+                                     _selectedSuggestion(0),_replaceEnd(-1),
+                                     vars(createTST("dictest.txt", 1024)) {
     add("");
+}
+MorseTranslator::~MorseTranslator() {
+    cleanupTST(vars);
 }
 
 void MorseTranslator::_buildWordSuggestions() {
-    _wordSuggestions.clear();
-    _wordSuggestions.push_back(_currWord);
-    _wordSuggestions.push_back("Hi!");
+    _wordSuggestions = autoComplete(vars,_currWord,5);
+    _wordSuggestions.push_front(_currWord);
 }
 
 std::map<std::string,std::string> morseToTxt;

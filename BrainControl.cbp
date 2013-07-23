@@ -14,14 +14,14 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="C:/Program Files (x86)/Emotiv Development Kit_v1.0.0.3-PREMIUM/doc/examples/include" />
-					<Add directory="C:/Users/Joe/Downloads/SDL-1.2.15/include" />
+					<Add directory="C:/SDL-1.2.15/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-lmingw32 -lSDLmain -lSDL -lSDL_ttf" />
 					<Add library="C:\Program Files (x86)\Emotiv Development Kit_v1.0.0.3-PREMIUM\edk.dll" />
-					<Add directory="C:/Program Files (x86)/Emotiv Development Kit_v1.0.0.3-PREMIUM" />
-					<Add directory="C:/Users/Joe/Downloads/SDL-1.2.15/bin" />
-					<Add directory="C:/Users/Joe/Downloads/SDL-1.2.15/lib" />
+					<Add directory="../../../../../Program Files (x86)/Emotiv Development Kit_v1.0.0.3-PREMIUM/doc/examples/bin" />
+					<Add directory="C:/SDL-1.2.15/bin" />
+					<Add directory="C:/SDL-1.2.15/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">

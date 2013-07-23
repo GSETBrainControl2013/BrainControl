@@ -32,116 +32,23 @@ WebSite: http://www.cs.dal.ca/~zyu
 
 #include "ternarySearchTree.h"
 #include <iostream>
+#include <fstream>
 #include "vector.h"
-#include <time.h>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+#include <string>
+#include <map>
 
 #define MAX_LINE_LEN			1024
-#define DIC_FILE_NAME			"dic.txt"
-
-void ternarySearchTreeUnitTest()
-{
-	const char * fileName = DIC_FILE_NAME;
-	TernarySearchTree<string> tst;
-
-	/**
-     *	read in dictionary file, build the tree
-	 * the file format should be one of follwings
-	 * 1. word<tab>description\n
-	 * 2. word\n
-	 */
-	Vector<string> newKeyVector;
-	Vector<string> newValueVector;
-	Vector< TstItem<string> > itemVector;
-	if ( fileName )
-	{
-
-		/* get token string from input file */
-		FILE * fp = fopen( fileName,"r" );
-		if ( fp != NULL )
-		{
-			char s[MAX_LINE_LEN];
-
-			while( fgets( s, MAX_LINE_LEN, fp ) != NULL)
-			{
-				string key = s;
-				/*int index = str.indexOf("\t");
-				string key = str.substring( 0, index );
-				key.trim();
-				*/
-				key.trim("\r").trim("\n");//remove \r or \n
-				string value = "value of " + key;
-				value.trim("\r");//remove \r or \n
-				value.trim("\n");
-				tst.add( key.c_str(), value );
-				TstItem<String> item( key, value );
-				itemVector.add( item );
-			}
-			fclose( fp );
-		}
-	}
-
-	// test for searching
-
-	for ( int i =0;i<tst.count();i++)
-	{
-		const char * str = tst.getKey( i );
-		if ( tst.contains( str ) )
-		{	// key is found, display key and value
-			string * value = tst.getValue( str );
-			cout<< "key/value: "<< str <<" - "<< value->c_str() <<endl;
-		}
-		else
-		{
-			cout<< "key: " << str << " not found!"<<endl;
-		}
-	}
-
-	cout<<"total "<<tst.count()<<" items in the tree"<<endl;
-
-	// test build a balanced ternary search tree.
-	tst.buildBalancedTree( itemVector );
-	itemVector.clear();
-
-
-	// Get sorted item list
-	Vector<int> sortedVector = tst.getSortedItemIndexes();
-	for ( unsigned i=0; i < sortedVector.count(); i++)
-	{
-		int index = sortedVector[i];
-		const char * key = tst.getKey( index );
-		string * value = tst.getValue( index ) ;
-		cout<<"key/value "<< key <<" - "<<value->c_str()<<endl;
-	}
-	// Partial matching search
-
-	string key("?a?a?a");
-	//string key("wo*");
-	Vector<int> pmVector = tst.partialMatchSearch( key.c_str() );
-
-	for (unsigned j=0;j<pmVector.count();j++)
-	{
-		cout<<"\tmatching: "<< tst.getKey( pmVector[j] ) <<" -  "<< tst.getValue( pmVector[j] )->c_str()<<endl;
-	}
-	cout<<"total matches "<< (int)pmVector.count()<<endl;
-
-	// Near neighbor search
-
-	string s("jerry");
-	Vector<int> nearVector = tst.nearSearch( s.c_str(), 1 );
-
-	for (unsigned j=0;j<nearVector.count();j++)
-	{
-		cout<<"\tmatching: "<< tst.getKey( nearVector[j]) << " -  " << tst.getValue( nearVector[j] )->c_str()<<endl;
-	}
-	cout<<"total matches "<<(int)nearVector.count()<<endl;
-
-}
+#define DIC_FILE_NAME			"dictest.txt"
+int correctionNum = 3;
 
 template<class T>
-std::ostream& operator<<(std::ostream& os,const Vector<T>& v) {
-    os << "Vector{";
+std::ostream& operator<<(std::ostream& os,const std::vector<T>& v) {
+    os << "std::vector{";
     bool first = true;
-    for(int i=0;i<v.count();++i) {
+    for(unsigned int i=0;i<v.size();++i) {
         if(!first) {
             os << ",";
         }
@@ -154,81 +61,90 @@ std::ostream& operator<<(std::ostream& os,const Vector<T>& v) {
 
 void ternarySearchTreeNeighborTest() {
     const char * fileName = DIC_FILE_NAME;
-    TernarySearchTree<int> tst;
-	Vector< TstItem<int> > itemVector;
-	Vector<int> correctionIds;
-	Vector<string> corrections;
-
-	int i = 0;
+    suck::TernarySearchTree<int> tst;
+	suck::Vector< suck::TstItem<int> > itemVector;
+	map <string, int> daMap;
+	suck::Vector<int> correctionIdVector;
+	std::vector<std::string> corrections;
 
 	if ( fileName ) {
 		FILE * fp = fopen( fileName,"r" );
 		if ( fp != NULL ) {
 			char s[MAX_LINE_LEN];
-
+            int count = 0;
 			while( fgets( s, MAX_LINE_LEN, fp ) != NULL)
 			{
-				string key = s;
-				key.trim("\r").trim("\n");//remove \r or \n
-				int value = i;
-				TstItem<int> item( key, value );
-				itemVector.add( item );
-				i++;
+			    suck::string str = s;
+				int value = -1;
+                istringstream iss(s);
+                std::string key;
+                iss >> key >> value;
+                tst.add( key.c_str(), value);
+                suck::TstItem<int> item( suck::string(key.c_str()), value );
+                itemVector.add( item );
+                daMap[key] = value;
+                count++;
+
 			}
 			fclose( fp );
 		}
 
         tst.buildBalancedTree( itemVector );
+
         itemVector.clear();
 
         string input = "";
+        char c = getchar();
 
-        while ((input += getchar()) != "Q") {
-
-            if (input == "C") {
-                input = getchar();
+        while (c != 'Q') {
+            if (c == 'C') {
+                daMap[input] += 1;
+                input = "";
             }
             else {
-                if (input.length() > 5) {
-                    correctionIds = tst.prefixSearch(input.c_str());
-                }
-                else {
-                    correctionIds = tst.prefixSearch(input.c_str());
-                }
-                for (unsigned j = 0; j < correctionIds.count();j++) {
-                    int tmp = correctionIds.get(j);
-                    corrections.add(tst.getKey(tmp));
-                }
-                cout << corrections;
+                input += c;
+                correctionIdVector = tst.prefixSearch(input.c_str()).join(tst.nearSearch(input.c_str(), 4));
+                int correctionIds[correctionIdVector.count()][2];
 
-                correctionIds.clear();
-                corrections.clear();
+                for (unsigned j = 0; j < correctionIdVector.count();j++) {
+                    int tmp = correctionIdVector.get(j);
+                    correctionIds[j][0] = daMap[tst.getKey(correctionIdVector.get(j))];
+                    correctionIds[j][1] = tmp;
+                }
+
+                if (correctionIdVector.count() > 0) {
+                     std::sort(&correctionIds[0][0], &correctionIds[correctionIdVector.count()-1][0]);
+                }
+
+                for (unsigned k = 0; k < correctionNum && k < correctionIdVector.count(); k++){
+                     corrections.push_back(tst.getKey(correctionIds[correctionIdVector.count() - k - 1][1]));
+                }
+
+                cout << corrections;
             }
+            c = getchar();
+            if (c == '\n') c = getchar();
+
+            corrections.clear();
+
+        }
+        daMap[input] += 1;
+
+        ofstream file ("dictest.txt");
+
+        for (int i = 0; i < tst.count(); i++) {
+            string tmp = tst.getKey(i);
+            file << tmp;
+            file << " ";
+            file << daMap[tmp];
+            file << "\n";
         }
 
+        file.close();
 	}
 }
 
 int main()
 {
-	struct tm *newtime;
-	time_t aclock;
-
-	time( &aclock );   // Get time in seconds
-	newtime = localtime( &aclock );   // Convert time to struct tm form
-	// Print local time as a string
-	printf( "Starting datetime: %s", asctime( newtime ) );
-
-
-	// Unit Test for Ternary Search Tree
-	//ternarySearchTreeUnitTest();
-
-	// Construct tree and while loop for input, display neighbors
 	ternarySearchTreeNeighborTest();
-
-	time( &aclock );   // Get time in seconds
-	newtime = localtime( &aclock );   // Convert time to struct tm form
-	// Print local time as a string
-	printf( "Ending datetime: %s", asctime( newtime ) );
-
 }

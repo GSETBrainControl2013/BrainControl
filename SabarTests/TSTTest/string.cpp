@@ -26,6 +26,8 @@ WebSite: http://www.cs.dal.ca/~zyu
 #include "mystring.h"
 #include <cstdio>
 
+namespace suck{
+
 #define MAX(a,b) a>b ? a : b;
 string::string( const char * cstring )
 {
@@ -562,4 +564,6 @@ int string::BoyerMooreSearch( const char * str, const char* pattern, size_t len 
 		}
 	}
 	return textIndex + 1;
+}
+
 }

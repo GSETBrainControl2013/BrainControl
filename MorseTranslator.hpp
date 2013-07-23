@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "AutoComplete.h"
 
 class MorseTranslator {
     static void morseSuggestion(std::string start,std::vector<std::pair<std::string,std::string> >& out);
@@ -14,6 +15,7 @@ class MorseTranslator {
     std::vector<std::pair<std::string,std::string> > _suggestions;
     std::vector<std::string> _wordSuggestions;
     unsigned _selectedSuggestion;
+    autoCompleteVars *vars;
 
     std::ofstream rawLog,textLog;
 
@@ -21,6 +23,7 @@ class MorseTranslator {
     void _add(char c);
 public:
     MorseTranslator();
+    ~MorseTranslator();
 
     void add(std::string morse);
     const std::string& text() const {
