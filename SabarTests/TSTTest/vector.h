@@ -34,6 +34,8 @@ WebSite: http://www.cs.dal.ca/~zyu
 
 class ArrayIndexOutOfBoundsException { };
 
+namespace suck {
+
 template <class Object>
 class vector
 {
@@ -598,6 +600,8 @@ Vector<Object> vector<Object>::join(Vector<Object> y) {
     }
 
     return joint;
+
+}
 
 }
 

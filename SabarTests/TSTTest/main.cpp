@@ -34,16 +34,21 @@ WebSite: http://www.cs.dal.ca/~zyu
 #include <iostream>
 #include <fstream>
 #include "vector.h"
+#include <vector>
+#include <sstream>
+#include <algorithm>
+#include <string>
+#include <map>
 
 #define MAX_LINE_LEN			1024
 #define DIC_FILE_NAME			"dictest.txt"
-
+int correctionNum = 3;
 
 template<class T>
-std::ostream& operator<<(std::ostream& os,const Vector<T>& v) {
-    os << "Vector{";
+std::ostream& operator<<(std::ostream& os,const std::vector<T>& v) {
+    os << "std::vector{";
     bool first = true;
-    for(unsigned int i=0;i<v.count();++i) {
+    for(unsigned int i=0;i<v.size();++i) {
         if(!first) {
             os << ",";
         }
@@ -56,33 +61,36 @@ std::ostream& operator<<(std::ostream& os,const Vector<T>& v) {
 
 void ternarySearchTreeNeighborTest() {
     const char * fileName = DIC_FILE_NAME;
-    TernarySearchTree<int> tst;
-	Vector< TstItem<int> > itemVector;
-	Vector<int> correctionIds;
-	Vector<string> corrections;
+    suck::TernarySearchTree<int> tst;
+	suck::Vector< suck::TstItem<int> > itemVector;
+	map <string, int> daMap;
+	suck::Vector<int> correctionIdVector;
+	std::vector<std::string> corrections;
 
 	if ( fileName ) {
 		FILE * fp = fopen( fileName,"r" );
 		if ( fp != NULL ) {
 			char s[MAX_LINE_LEN];
-
+            int count = 0;
 			while( fgets( s, MAX_LINE_LEN, fp ) != NULL)
 			{
-				string key = s;
-                key.trim("\r").trim("\n");//remove \r or \n
-				int value = 0;
-				tst.add( key.c_str(), value );
-				TstItem<int> item( key, value );
-				itemVector.add( item );
+			    suck::string str = s;
+				int value = -1;
+                istringstream iss(s);
+                std::string key;
+                iss >> key >> value;
+                tst.add( key.c_str(), value);
+                suck::TstItem<int> item( suck::string(key.c_str()), value );
+                itemVector.add( item );
+                daMap[key] = value;
+                count++;
+
 			}
 			fclose( fp );
 		}
 
         tst.buildBalancedTree( itemVector );
-        int usageCounts[itemVector.count()];
-        for (int i = 0; i < itemVector.count(); i++){
-            usageCounts[i] = itemVector[i].value;
-        }
+
         itemVector.clear();
 
         string input = "";
@@ -90,17 +98,28 @@ void ternarySearchTreeNeighborTest() {
 
         while (c != 'Q') {
             if (c == 'C') {
-                usageCounts[tst.getItemIndex(input.c_str())]++;
+                daMap[input] += 1;
                 input = "";
             }
             else {
                 input += c;
-                correctionIds = tst.prefixSearch(input.c_str()).join(tst.nearSearch(input.c_str(), 2));
+                correctionIdVector = tst.prefixSearch(input.c_str()).join(tst.nearSearch(input.c_str(), 4));
+                int correctionIds[correctionIdVector.count()][2];
 
-                for (unsigned j = 0; j < correctionIds.count();j++) {
-                    int tmp = correctionIds.get(j);
-                    corrections.add(tst.getKey(tmp));
+                for (unsigned j = 0; j < correctionIdVector.count();j++) {
+                    int tmp = correctionIdVector.get(j);
+                    correctionIds[j][0] = daMap[tst.getKey(correctionIdVector.get(j))];
+                    correctionIds[j][1] = tmp;
                 }
+
+                if (correctionIdVector.count() > 0) {
+                     std::sort(&correctionIds[0][0], &correctionIds[correctionIdVector.count()-1][0]);
+                }
+
+                for (unsigned k = 0; k < correctionNum && k < correctionIdVector.count(); k++){
+                     corrections.push_back(tst.getKey(correctionIds[correctionIdVector.count() - k - 1][1]));
+                }
+
                 cout << corrections;
             }
             c = getchar();
@@ -109,14 +128,16 @@ void ternarySearchTreeNeighborTest() {
             corrections.clear();
 
         }
-        usageCounts[tst.getItemIndex(input.c_str())]++;
+        daMap[input] += 1;
 
         ofstream file ("dictest.txt");
 
         for (int i = 0; i < tst.count(); i++) {
-            file << *tst.getKey(i);
+            string tmp = tst.getKey(i);
+            file << tmp;
             file << " ";
-            file << usageCounts[i];
+            file << daMap[tmp];
+            file << "\n";
         }
 
         file.close();

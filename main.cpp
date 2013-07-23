@@ -12,6 +12,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_ttf.h"
 #include <stdexcept>
+#include "AutoComplete.h"
 
 const float FPS = 30;
 const Uint32 MS_PER_FRAME = 1000/FPS;
@@ -115,6 +116,15 @@ SDL_Surface* buildWindow(TTF_Font* font,const std::vector<std::string>& lines,SD
 }
 
 int main(int argc,char* argv[]) {
+    autoCompleteVars *vars = createTST("dictest.txt", 1024);
+    std::vector<std::string> v = autoComplete(vars,"he",5);
+    std::cout << v.size() << std::endl;
+    for(size_t i=0;i<v.size();++i) {
+        std::cout << v[i] << std::endl;
+    }
+    cleanupTST(vars);
+
+return 0;
 	EmoEngine engine;
 	ExpressionProcessor processor;
     MorseTranslator morse;
@@ -244,4 +254,9 @@ int main(int argc,char* argv[]) {
         SDL_Delay(1);
     }
     return 0;
+
+
+
+
+
 }

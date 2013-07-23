@@ -65,6 +65,8 @@ WebSite: http://www.cs.dal.ca/~zyu
 * define tree node structure
 */
 
+namespace suck {
+
 typedef struct TstNode * TstTree;
 
 typedef struct TstNode
@@ -724,6 +726,8 @@ void TernarySearchTree<Object>::buildBalancedTreeRecursive( Vector< TstItem<Obje
 	add( itemVector[ start + mid ].key.c_str(), itemVector[ start + mid ].value );
 	buildBalancedTreeRecursive( itemVector, start, start + mid - 1 );
 	buildBalancedTreeRecursive( itemVector, start + mid + 1, end );
+}
+
 }
 
 #endif

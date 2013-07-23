@@ -300,7 +300,7 @@
 	<stdexcept>
 	<queue>
 
-1373913332 source:c:\users\navin\gset\brain control\braincontrol\exp2morse.cpp
+1374536951 source:c:\users\navin\gset\brain control\braincontrol\exp2morse.cpp
 	"Exp2Morse.hpp"
 
 1373572642 c:\users\navin\gset\brain control\braincontrol\exp2morse.hpp
@@ -316,19 +316,21 @@
 	"Expression.hpp"
 	<sstream>
 
-1374001433 source:c:\users\navin\gset\brain control\braincontrol\expressionprocessor.cpp
+1374536951 source:c:\users\navin\gset\brain control\braincontrol\expressionprocessor.cpp
 	"ExpressionProcessor.hpp"
 
-1374001433 c:\users\navin\gset\brain control\braincontrol\expressionprocessor.hpp
+1374536951 c:\users\navin\gset\brain control\braincontrol\expressionprocessor.hpp
 	"Expression.hpp"
 	"EmoEngine.hpp"
 	"NodDetector.hpp"
+	<fstream>
 
-1374001433 c:\users\navin\gset\brain control\braincontrol\noddetector.hpp
+1374536952 c:\users\navin\gset\brain control\braincontrol\noddetector.hpp
 	<windows.h>
 	<list>
+	<iostream>
 
-1374001433 source:c:\users\navin\gset\brain control\braincontrol\main.cpp
+1374602397 source:c:\users\navin\gset\brain control\braincontrol\main.cpp
 	"EmoStateDLL.h"
 	"edk.h"
 	<iostream>
@@ -343,10 +345,12 @@
 	"SDL/SDL.h"
 	"SDL/SDL_ttf.h"
 	<stdexcept>
+	"AutoComplete.h"
 
-1374001433 c:\users\navin\gset\brain control\braincontrol\morsetranslator.hpp
+1374536951 c:\users\navin\gset\brain control\braincontrol\morsetranslator.hpp
 	<vector>
 	<string>
+	<fstream>
 
 1325742239 c:\sdl-1.2.15\include\sdl\sdl.h
 	"SDL_main.h"
@@ -543,17 +547,52 @@
 	"begin_code.h"
 	"close_code.h"
 
-1374001433 source:c:\users\navin\gset\brain control\braincontrol\morsetranslator.cpp
+1374536951 source:c:\users\navin\gset\brain control\braincontrol\morsetranslator.cpp
 	"MorseTranslator.hpp"
 	<map>
 	<iostream>
 	<algorithm>
 	<string>
 
-1373572642 source:c:\users\navin\gset\brain control\braincontrol\noddetector.cpp
+1374536951 source:c:\users\navin\gset\brain control\braincontrol\noddetector.cpp
 	"NodDetector.hpp"
 	<limits>
 	<cstdlib>
 	"edk.h"
 	<iostream>
+
+1374540178 source:c:\users\navin\gset\brain control\braincontrol\string.cpp
+	"mystring.h"
+	<cstdio>
+
+1374586844 c:\users\navin\gset\brain control\braincontrol\mystring.h
+	<stdlib.h>
+	<iostream>
+	<assert.h>
+	<string.h>
+
+1374602121 c:\users\navin\gset\brain control\braincontrol\autocomplete.h
+	"vector.h"
+	"ternarySearchTree.h"
+	<map>
+	<vector>
+	<string>
+
+1374600231 c:\users\navin\gset\brain control\braincontrol\vector.h
+	<stdio.h>
+	<assert.h>
+	<cstdlib>
+
+1374539782 c:\users\navin\gset\brain control\braincontrol\ternarysearchtree.h
+	"vector.h"
+	"mystring.h"
+	<stdlib.h>
+
+1374602441 source:c:\users\navin\gset\brain control\braincontrol\autocomplete.cpp
+	"AutoComplete.h"
+	<iostream>
+	<fstream>
+	<vector>
+	<sstream>
+	<algorithm>
 

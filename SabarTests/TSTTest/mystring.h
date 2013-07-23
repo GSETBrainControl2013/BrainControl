@@ -32,7 +32,7 @@ WebSite: http://www.cs.dal.ca/~zyu
 #include <string.h>
 using namespace std;
 
-#define string String
+namespace suck {
 
 class StringIndexOutOfBounds { };
 
@@ -570,5 +570,7 @@ string operator + ( const string &s1, const char *s2 );
 string operator + ( const char *s1, const string &s2 );
 string operator + ( const string & s1, const char* s2 );
 string operator + (const char* s1, const string & s2);
+
+}
 
 #endif
