@@ -104,8 +104,9 @@ MorseTranslator::~MorseTranslator() {
 }
 
 void MorseTranslator::_buildWordSuggestions() {
+    _wordSuggestions.clear();
     if(_currWord.empty()) {
-        _wordSuggestions.clear();
+        return;
     }
     autoComplete(vars,_currWord,5,_wordSuggestions);
     _wordSuggestions.insert(_wordSuggestions.begin(),_currWord);
@@ -138,20 +139,24 @@ void MorseTranslator::_add(char c) {
         _morseLetter.clear();
     }
     if(c == '/') {
-        std::string replacement = _wordSuggestions[_selectedSuggestion];
         _replacedWord = _currWord;
         _replacedMorse = _morseLetter;
         _replaceBegin = _text.size();
-        _replaceEnd = _replaceBegin+replacement.length()+1;
-        _text += replacement + " ";
-        _currWord = _morseLetter = "";
-        _selectedSuggestion = 0;
-        std::map<std::string,int>::iterator usage = vars->daMap.find(replacement);
-        if(usage == vars->daMap.end()) {
-            vars->daMap[replacement] = 1;
-        } else {
-            vars->daMap[replacement]++;
+        _replaceEnd = -1;
+        if(!_wordSuggestions.empty()) {
+            std::string replacement = _wordSuggestions[_selectedSuggestion];
+            _replaceEnd = _replaceBegin+replacement.length()+1;
+            _text += replacement;
+            _currWord = _morseLetter = "";
+            _selectedSuggestion = 0;
+            std::map<std::string,int>::iterator usage = vars->daMap.find(replacement);
+            if(usage == vars->daMap.end()) {
+                vars->daMap[replacement] = 1;
+            } else {
+                vars->daMap[replacement]++;
+            }
         }
+        _text += " ";
     }
     if(c == '.' || c == '-') {
         _morseLetter += c;
@@ -160,12 +165,21 @@ void MorseTranslator::_add(char c) {
         backspace();
     }
     if(c == '^') {
-        --_selectedSuggestion;
-        _selectedSuggestion %= _wordSuggestions.size();
+        if(_wordSuggestions.empty()) {
+            _selectedSuggestion = 0;
+        } else if(_selectedSuggestion == 0) {
+            _selectedSuggestion = _wordSuggestions.size()-1;
+        } else {
+            --_selectedSuggestion;
+        }
     }
     if(c == 'v') {
-        ++_selectedSuggestion;
-        _selectedSuggestion %= _wordSuggestions.size();
+        if(_wordSuggestions.empty()) {
+            _selectedSuggestion = 0;
+        } else {
+            ++_selectedSuggestion;
+            _selectedSuggestion %= _wordSuggestions.size();
+        }
     }
     morseSuggestion(_morseLetter,_suggestions);
     if(oldWord != _currWord) {

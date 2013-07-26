@@ -152,7 +152,7 @@ int main(int argc,char* argv[]) {
 
     fontHandler font;
     font.font = TTF_OpenFont("brain.ttf",20);
-    SDL_WM_SetCaption("T3: Thought To Text",NULL);
+    SDL_WM_SetCaption("FTS: Facial Typing System",NULL);
     std::string txt = "";
 
     std::ofstream eventLog("logs/events.csv",std::ios_base::out|std::ios_base::trunc);

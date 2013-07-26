@@ -48,7 +48,7 @@ void autoComplete(autoCompleteVars *vars, std::string input, int correctionNum,s
     corrections.clear();
     corrections.reserve(correctionNum);
 
-    correctionIdVector = vars->tst.prefixSearch(input.c_str()).join(vars->tst.nearSearch(input.c_str(), 20));
+    correctionIdVector = vars->tst.prefixSearch(input.c_str()).join(vars->tst.nearSearch(input.c_str(), 4));
 
     corrections.clear();
     std::vector<std::string> keys;
@@ -60,6 +60,7 @@ void autoComplete(autoCompleteVars *vars, std::string input, int correctionNum,s
     for(size_t i=0;i<correctionIdVector.count();++i) {
         if(i < correctionNum) {
             corrections.push_back(keys[i]);
+            continue;
         }
         for(size_t j=0;j<corrections.size();++j) {
             std::string otherKey = keys[i];
