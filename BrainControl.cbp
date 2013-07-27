@@ -58,6 +58,7 @@
 		<Unit filename="mystring.h" />
 		<Unit filename="string.cpp" />
 		<Unit filename="ternarySearchTree.h" />
+		<Unit filename="vector.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

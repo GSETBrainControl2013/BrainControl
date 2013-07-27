@@ -48,7 +48,7 @@ void autoComplete(autoCompleteVars *vars, std::string input, int correctionNum,s
     corrections.clear();
     corrections.reserve(correctionNum);
 
-    correctionIdVector = vars->tst.prefixSearch(input.c_str()).join(vars->tst.nearSearch(input.c_str(), 4));
+    correctionIdVector = vars->tst.prefixSearch(input.c_str()).join(vars->tst.nearSearch(input.c_str(), 20));
 
     corrections.clear();
     std::vector<std::string> keys;
@@ -57,7 +57,7 @@ void autoComplete(autoCompleteVars *vars, std::string input, int correctionNum,s
         keys.push_back(vars->tst.getKey(correctionIdVector.get(j)));
     }
 
-    for(size_t i=0;i<correctionIdVector.count();++i) {
+    for(size_t i=0;i<keys.size();++i) {
         if(i < correctionNum) {
             corrections.push_back(keys[i]);
             continue;
@@ -66,7 +66,7 @@ void autoComplete(autoCompleteVars *vars, std::string input, int correctionNum,s
             std::string otherKey = keys[i];
             int aUsage = vars->daMap[otherKey],
                 bUsage = vars->daMap[corrections[j]];
-            if(aUsage > bUsage || (aUsage == bUsage && otherKey < corrections[j])) {
+            if(aUsage > bUsage || false && (aUsage == bUsage && otherKey < corrections[j])) {
                 corrections[j] = otherKey;
                 break;
             }
