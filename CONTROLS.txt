@@ -1,0 +1,13 @@
+To run the FTS, run BrainControl.exe
+To control it, make the indicated expression or type the indicated key on your keyboard.
+
+Smirk Right    / ".": Dot
+Smirk Left     / "-": Dash
+Raise Eybrows  / " " (space): End Letter
+Nod Up         / "^": Select up (for autocomplete)/unlock typing
+Nod Down       / "v": Select down (autocomplete)
+Nod Right      / ">": End word/Select autocomplete
+Nod Left       / "<": Backspace
+"Lift" Thought / "@": Lock typing
+
+Words and usage counts are stored in dictest.txt, so if you want to play around with the autocomplete, that's where you'd change it. Make sure the entries are in "WORD <usage>" format, because it'll probably do weird things otherwise.
